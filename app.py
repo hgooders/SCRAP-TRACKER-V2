@@ -231,7 +231,9 @@ def dashboard():
         month_qty=month_qty,
         total_qty=total_qty
     )
-    @app.route("/add-scrap", methods=["GET", "POST"])
+
+    
+@app.route("/add-scrap", methods=["GET", "POST"])
 @login_required
 def add_scrap():
 
