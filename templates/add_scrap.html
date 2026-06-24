@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card p-4">
+
+    <h3 class="mb-4">
+        Add Scrap Record
+    </h3>
+
+    <form method="POST">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+                <label>Part Number</label>
+                <input type="text" name="part_number" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Part Name</label>
+                <input type="text" name="part_name" class="form-control" required>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Quantity</label>
+            <input type="number" name="quantity" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Reason</label>
+
+            <select name="reason" class="form-select">
+
+                {% for reason in reasons %}
+                    <option value="{{ reason.name }}">
+                        {{ reason.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Other Defect</label>
+            <input type="text" name="other_reason" class="form-control">
+        </div>
+
+        <div class="mb-3">
+
+            <label>Origin Line</label>
+
+            <select name="origin_line" class="form-select">
+
+                {% for line in lines %}
+                    <option value="{{ line.name }}">
+                        {{ line.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Destination</label>
+
+            <select name="destination_line" class="form-select">
+
+                {% for line in lines %}
+                    <option value="{{ line.name }}">
+                        {{ line.name }}
+                    </option>
+                {% endfor %}
+
+                <option value="Scrap Bin">
+                    Scrap Bin
+                </option>
+
+                <option value="Rework">
+                    Rework
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Comments</label>
+            <textarea
+                name="comments"
+                rows="4"
+                class="form-control"
+            ></textarea>
+        </div>
+
+        <button class="btn btn-danger">
+            Record Scrap
+        </button>
+
+        <a href="/dashboard" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+{% endblock %}
