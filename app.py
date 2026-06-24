@@ -34,7 +34,7 @@ login_manager.login_view = "login"
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-  @app.route("/")
+@app.route("/")
 def home():
     if current_user.is_authenticated:
         return redirect(url_for("dashboard"))
