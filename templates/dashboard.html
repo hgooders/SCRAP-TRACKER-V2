@@ -2,43 +2,74 @@
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<div class="row mb-4">
 
-<p>Total Scrap Quantity: {{ total_qty }}</p>
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5>Today's Scrap</h5>
+            <div class="kpi">
+                {{ today_qty }}
+            </div>
+        </div>
+    </div>
 
-<a href="{{ url_for('add_scrap') }}">
-    Add Scrap Record
-</a>
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h5>Total Scrap</h5>
+            <div class="kpi">
+                {{ total_qty }}
+            </div>
+        </div>
+    </div>
 
-<br><br>
+</div>
 
-<table border="1">
-    <tr>
-        <th>Date</th>
-        <th>Part Number</th>
-        <th>Part Name</th>
-        <th>Quantity</th>
-        <th>Reason</th>
-        <th>Origin</th>
-        <th>Destination</th>
-    </tr>
+<div class="mb-3">
 
-    {% for record in records %}
-    <tr>
-        <td>{{ record.created_at }}</td>
-        <td>{{ record.part_number }}</td>
-        <td>{{ record.part_name }}</td>
-        <td>{{ record.quantity }}</td>
-        <td>{{ record.reason }}</td>
-        <td>{{ record.origin_line }}</td>
-        <td>{{ record.destination_line }}</td>
-    </tr>
-    {% endfor %}
+    <a href="/add-scrap" class="btn btn-danger">
+        Add Scrap Record
+    </a>
 
-</table>
+</div>
 
-<br>
+<div class="card p-3">
 
-<a href="{{ url_for('logout') }}">Logout</a>
+    <h4 class="mb-3">
+        Recent Scrap Records
+    </h4>
+
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Part</th>
+                <th>Qty</th>
+                <th>Reason</th>
+                <th>Origin</th>
+                <th>Destination</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        {% for record in records %}
+
+        <tr>
+            <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+            <td>{{ record.part_name }}</td>
+            <td>{{ record.quantity }}</td>
+            <td>{{ record.reason }}</td>
+            <td>{{ record.origin_line }}</td>
+            <td>{{ record.destination_line }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
 
 {% endblock %}
