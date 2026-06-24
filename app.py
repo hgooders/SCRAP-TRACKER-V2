@@ -36,12 +36,24 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("login.html")
 
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "HG" and password == "123":
+            return redirect(url_for("dashboard"))
+
+    return render_template("login.html")
 
 @app.route("/dashboard")
 def dashboard():
-    return "Dashboard working"
+    return """
+    <h1>Scrap Tracker Dashboard</h1>
+    <p>Login Successful</p>
+    <a href='/add-scrap'>Add Scrap Record</a>
+    """
 
 
 def seed_defaults():
