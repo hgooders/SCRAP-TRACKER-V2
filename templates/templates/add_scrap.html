@@ -2,69 +2,112 @@
 
 {% block content %}
 
-<h2>Add Scrap Record</h2>
+<div class="card p-4">
 
-<form method="POST">
+    <h3 class="mb-4">
+        Add Scrap Record
+    </h3>
 
-    <label>Part Number</label><br>
-    <input type="text" name="part_number" required><br><br>
+    <form method="POST">
 
-    <label>Part Name</label><br>
-    <input type="text" name="part_name" required><br><br>
+        <div class="row">
 
-    <label>Quantity</label><br>
-    <input type="number" name="quantity" required><br><br>
+            <div class="col-md-6 mb-3">
+                <label>Part Number</label>
+                <input type="text" name="part_number" class="form-control" required>
+            </div>
 
-    <label>Reason</label><br>
-    <select name="reason" id="reason">
-        {% for reason in reasons %}
-        <option value="{{ reason.name }}">
-            {{ reason.name }}
-        </option>
-        {% endfor %}
-    </select>
-    <br><br>
+            <div class="col-md-6 mb-3">
+                <label>Part Name</label>
+                <input type="text" name="part_name" class="form-control" required>
+            </div>
 
-    <label>Other Defect</label><br>
-    <input type="text" name="other_reason">
-    <br><br>
+        </div>
 
-    <label>Line of Origin</label><br>
-    <select name="origin_line">
-        {% for line in lines %}
-        <option value="{{ line.name }}">
-            {{ line.name }}
-        </option>
-        {% endfor %}
-    </select>
-    <br><br>
+        <div class="mb-3">
+            <label>Quantity</label>
+            <input type="number" name="quantity" class="form-control" required>
+        </div>
 
-    <label>Scrap To</label><br>
-    <select name="destination_line">
-        {% for line in lines %}
-        <option value="{{ line.name }}">
-            {{ line.name }}
-        </option>
-        {% endfor %}
-        <option value="Scrap Bin">Scrap Bin</option>
-        <option value="Rework">Rework</option>
-    </select>
-    <br><br>
+        <div class="mb-3">
+            <label>Reason</label>
 
-    <label>Comments</label><br>
-    <textarea name="comments"></textarea>
-    <br><br>
+            <select name="reason" class="form-select">
 
-    <button type="submit">
-        Record Scrap
-    </button>
+                {% for reason in reasons %}
+                    <option value="{{ reason.name }}">
+                        {{ reason.name }}
+                    </option>
+                {% endfor %}
 
-</form>
+            </select>
 
-<br>
+        </div>
 
-<a href="{{ url_for('dashboard') }}">
-    Back to Dashboard
-</a>
+        <div class="mb-3">
+            <label>Other Defect</label>
+            <input type="text" name="other_reason" class="form-control">
+        </div>
+
+        <div class="mb-3">
+
+            <label>Origin Line</label>
+
+            <select name="origin_line" class="form-select">
+
+                {% for line in lines %}
+                    <option value="{{ line.name }}">
+                        {{ line.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Destination</label>
+
+            <select name="destination_line" class="form-select">
+
+                {% for line in lines %}
+                    <option value="{{ line.name }}">
+                        {{ line.name }}
+                    </option>
+                {% endfor %}
+
+                <option value="Scrap Bin">
+                    Scrap Bin
+                </option>
+
+                <option value="Rework">
+                    Rework
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+            <label>Comments</label>
+            <textarea
+                name="comments"
+                rows="4"
+                class="form-control"
+            ></textarea>
+        </div>
+
+        <button class="btn btn-danger">
+            Record Scrap
+        </button>
+
+        <a href="/dashboard" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
 
 {% endblock %}
