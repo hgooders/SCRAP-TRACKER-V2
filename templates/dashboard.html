@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<p>Total Scrap Quantity: {{ total_qty }}</p>
+
+<a href="{{ url_for('add_scrap') }}">
+    Add Scrap Record
+</a>
+
+<br><br>
+
+<table border="1">
+    <tr>
+        <th>Date</th>
+        <th>Part Number</th>
+        <th>Part Name</th>
+        <th>Quantity</th>
+        <th>Reason</th>
+        <th>Origin</th>
+        <th>Destination</th>
+    </tr>
+
+    {% for record in records %}
+    <tr>
+        <td>{{ record.created_at }}</td>
+        <td>{{ record.part_number }}</td>
+        <td>{{ record.part_name }}</td>
+        <td>{{ record.quantity }}</td>
+        <td>{{ record.reason }}</td>
+        <td>{{ record.origin_line }}</td>
+        <td>{{ record.destination_line }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<br>
+
+<a href="{{ url_for('logout') }}">Logout</a>
+
+{% endblock %}
