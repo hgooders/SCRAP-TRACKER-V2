@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Add Scrap Record</h2>
+
+<form method="POST">
+
+    <label>Part Number</label><br>
+    <input type="text" name="part_number" required><br><br>
+
+    <label>Part Name</label><br>
+    <input type="text" name="part_name" required><br><br>
+
+    <label>Quantity</label><br>
+    <input type="number" name="quantity" required><br><br>
+
+    <label>Reason</label><br>
+    <select name="reason" id="reason">
+        {% for reason in reasons %}
+        <option value="{{ reason.name }}">
+            {{ reason.name }}
+        </option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label>Other Defect</label><br>
+    <input type="text" name="other_reason">
+    <br><br>
+
+    <label>Line of Origin</label><br>
+    <select name="origin_line">
+        {% for line in lines %}
+        <option value="{{ line.name }}">
+            {{ line.name }}
+        </option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label>Scrap To</label><br>
+    <select name="destination_line">
+        {% for line in lines %}
+        <option value="{{ line.name }}">
+            {{ line.name }}
+        </option>
+        {% endfor %}
+        <option value="Scrap Bin">Scrap Bin</option>
+        <option value="Rework">Rework</option>
+    </select>
+    <br><br>
+
+    <label>Comments</label><br>
+    <textarea name="comments"></textarea>
+    <br><br>
+
+    <button type="submit">
+        Record Scrap
+    </button>
+
+</form>
+
+<br>
+
+<a href="{{ url_for('dashboard') }}">
+    Back to Dashboard
+</a>
+
+{% endblock %}
