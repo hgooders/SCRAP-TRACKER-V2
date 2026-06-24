@@ -38,9 +38,9 @@ def load_user(user_id):
 def home():
     if current_user.is_authenticated:
         return redirect(url_for("dashboard"))
-
+        
     return redirect(url_for("login"))
-  def seed_defaults():
+def seed_defaults():
     lines = [
         "Trim 1",
         "Trim 2 / IP",
