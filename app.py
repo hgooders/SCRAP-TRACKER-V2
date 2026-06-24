@@ -1,8 +1,38 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, Line, ScrapReason, ScrapRecord
-from datetime import datetime
+from flask import (
+    Flask,
+    render_template,
+    redirect,
+    url_for,
+    request,
+    flash,
+    send_file
+)
+
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user,
+    login_required,
+    current_user
+)
+
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
+
+from models import (
+    db,
+    User,
+    Line,
+    ScrapReason,
+    ScrapRecord
+)
+
+from datetime import datetime, timedelta
+from io import BytesIO
+from openpyxl import Workbook
+
 import os
 
 app = Flask(__name__)
@@ -60,19 +90,37 @@ def seed_defaults():
     ]
 
     for line in lines:
-        if not Line.query.filter_by(name=line).first():
-            db.session.add(Line(name=line))
+
+        if not Line.query.filter_by(
+            name=line
+        ).first():
+
+            db.session.add(
+                Line(name=line)
+            )
 
     for reason in reasons:
-        if not ScrapReason.query.filter_by(name=reason).first():
-            db.session.add(ScrapReason(name=reason))
 
-    if not User.query.filter_by(username="admin").first():
+        if not ScrapReason.query.filter_by(
+            name=reason
+        ).first():
+
+            db.session.add(
+                ScrapReason(name=reason)
+            )
+
+    if not User.query.filter_by(
+        username="admin"
+    ).first():
+
         admin = User(
             username="admin",
-            password_hash=generate_password_hash("admin123"),
+            password_hash=generate_password_hash(
+                "admin123"
+            ),
             role="admin"
         )
+
         db.session.add(admin)
 
     db.session.commit()
@@ -84,7 +132,9 @@ def seed_defaults():
 
 @app.route("/")
 def home():
-    return redirect(url_for("login"))
+    return redirect(
+        url_for("login")
+    )
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -92,80 +142,155 @@ def login():
 
     if request.method == "POST":
 
-        username = request.form.get("username")
-        password = request.form.get("password")
+        username = request.form.get(
+            "username"
+        )
 
-        user = User.query.filter_by(username=username).first()
+        password = request.form.get(
+            "password"
+        )
 
-        if user and check_password_hash(user.password_hash, password):
+        user = User.query.filter_by(
+            username=username
+        ).first()
+
+        if user and check_password_hash(
+            user.password_hash,
+            password
+        ):
+
             login_user(user)
-            return redirect(url_for("dashboard"))
 
-        flash("Invalid username or password")
+            return redirect(
+                url_for("dashboard")
+            )
 
-    return render_template("login.html")
+        flash(
+            "Invalid username or password"
+        )
+
+    return render_template(
+        "login.html"
+    )
 
 
 @app.route("/logout")
 @login_required
 def logout():
+
     logout_user()
-    return redirect(url_for("login"))
+
+    return redirect(
+        url_for("login")
+    )
 
 
 @app.route("/dashboard")
 @login_required
 def dashboard():
 
-    records = ScrapRecord.query.order_by(
-        ScrapRecord.created_at.desc()
-    ).limit(25).all()
+    all_records = ScrapRecord.query.all()
 
     today = datetime.utcnow().date()
 
     today_qty = sum(
         r.quantity
-        for r in records
+        for r in all_records
         if r.created_at.date() == today
     )
 
-    total_qty = sum(r.quantity for r in records)
+    week_qty = sum(
+        r.quantity
+        for r in all_records
+        if (
+            today - r.created_at.date()
+        ).days <= 7
+    )
+
+    month_qty = sum(
+        r.quantity
+        for r in all_records
+        if r.created_at.month == today.month
+        and r.created_at.year == today.year
+    )
+
+    total_qty = sum(
+        r.quantity
+        for r in all_records
+    )
+
+    records = ScrapRecord.query.order_by(
+        ScrapRecord.created_at.desc()
+    ).limit(25).all()
 
     return render_template(
         "dashboard.html",
         records=records,
         today_qty=today_qty,
+        week_qty=week_qty,
+        month_qty=month_qty,
         total_qty=total_qty
     )
-
-
-@app.route("/add-scrap", methods=["GET", "POST"])
+    @app.route("/add-scrap", methods=["GET", "POST"])
 @login_required
 def add_scrap():
 
-    lines = Line.query.order_by(Line.name).all()
-    reasons = ScrapReason.query.order_by(ScrapReason.name).all()
+    lines = Line.query.order_by(
+        Line.name
+    ).all()
+
+    reasons = ScrapReason.query.order_by(
+        ScrapReason.name
+    ).all()
 
     if request.method == "POST":
 
         record = ScrapRecord(
-            part_number=request.form["part_number"],
-            part_name=request.form["part_name"],
-            quantity=int(request.form["quantity"]),
-            reason=request.form["reason"],
-            other_reason=request.form.get("other_reason"),
-            origin_line=request.form["origin_line"],
-            destination_line=request.form["destination_line"],
-            comments=request.form.get("comments"),
+            part_number=request.form[
+                "part_number"
+            ],
+
+            part_name=request.form[
+                "part_name"
+            ],
+
+            quantity=int(
+                request.form["quantity"]
+            ),
+
+            reason=request.form[
+                "reason"
+            ],
+
+            other_reason=request.form.get(
+                "other_reason"
+            ),
+
+            origin_line=request.form[
+                "origin_line"
+            ],
+
+            destination_line=request.form[
+                "destination_line"
+            ],
+
+            comments=request.form.get(
+                "comments"
+            ),
+
             submitted_by=current_user.username
         )
 
         db.session.add(record)
         db.session.commit()
 
-        flash("Scrap record added successfully")
+        flash(
+            "Scrap record added successfully"
+        )
 
-        return redirect(url_for("dashboard"))
+        return redirect(
+            url_for("dashboard")
+        )
 
     return render_template(
         "add_scrap.html",
@@ -174,12 +299,92 @@ def add_scrap():
     )
 
 
+@app.route("/reports")
+@login_required
+def reports():
+
+    records = ScrapRecord.query.order_by(
+        ScrapRecord.created_at.desc()
+    ).all()
+
+    return render_template(
+        "reports.html",
+        records=records
+    )
+
+
+@app.route("/export-excel")
+@login_required
+def export_excel():
+
+    workbook = Workbook()
+
+    sheet = workbook.active
+    sheet.title = "Scrap Records"
+
+    headers = [
+        "Date",
+        "Part Number",
+        "Part Name",
+        "Quantity",
+        "Reason",
+        "Other Reason",
+        "Origin Line",
+        "Destination Line",
+        "Comments",
+        "Submitted By"
+    ]
+
+    sheet.append(headers)
+
+    records = ScrapRecord.query.order_by(
+        ScrapRecord.created_at.desc()
+    ).all()
+
+    for record in records:
+
+        sheet.append([
+            record.created_at.strftime(
+                "%d/%m/%Y %H:%M"
+            ),
+
+            record.part_number,
+            record.part_name,
+            record.quantity,
+            record.reason,
+            record.other_reason,
+            record.origin_line,
+            record.destination_line,
+            record.comments,
+            record.submitted_by
+        ])
+
+    output = BytesIO()
+
+    workbook.save(output)
+
+    output.seek(0)
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name="Scrap_Report.xlsx",
+        mimetype=(
+            "application/"
+            "vnd.openxmlformats-officedocument."
+            "spreadsheetml.sheet"
+        )
+    )
+
+
 # ------------------------
 # STARTUP
 # ------------------------
 
 with app.app_context():
+
     db.create_all()
+
     seed_defaults()
 
 
