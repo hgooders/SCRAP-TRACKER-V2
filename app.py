@@ -40,6 +40,13 @@ def home():
         return redirect(url_for("dashboard"))
         
     return redirect(url_for("login"))
+    @app.route("/login", methods=["GET", "POST"])
+def login():
+    return render_template("login.html")
+    @app.route("/dashboard")
+def dashboard():
+    return "Dashboard working"
+    
 def seed_defaults():
     lines = [
         "Trim 1",
