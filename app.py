@@ -1,13 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, request, flash
-from flask_login import (
-    LoginManager,
-    login_user,
-    logout_user,
-    login_required,
-    current_user
-)
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, User, Line, ScrapReason, ScrapRecord
+from flask import Flask, render_template, redirect, url_for, request
+from flask_login import LoginManager, current_user
+from models import db, User, Line, ScrapReason
 import os
 
 app = Flask(__name__)
@@ -34,19 +27,23 @@ login_manager.login_view = "login"
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+
 @app.route("/")
 def home():
-    if current_user.is_authenticated:
-        return redirect(url_for("dashboard"))
-        
     return redirect(url_for("login"))
-    @app.route("/login", methods=["GET", "POST"])
+
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
     return render_template("login.html")
-    @app.route("/dashboard")
+
+
+@app.route("/dashboard")
 def dashboard():
     return "Dashboard working"
-    
+
+
 def seed_defaults():
     lines = [
         "Trim 1",
@@ -78,16 +75,13 @@ def seed_defaults():
         if not ScrapReason.query.filter_by(name=reason).first():
             db.session.add(ScrapReason(name=reason))
 
-    if not User.query.filter_by(username="admin").first():
-        admin = User(
-            username="admin",
-            password_hash=generate_password_hash("admin123"),
-            role="admin"
-        )
-        db.session.add(admin)
-
     db.session.commit()
+
 
 with app.app_context():
     db.create_all()
     seed_defaults()
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
