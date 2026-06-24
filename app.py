@@ -1,6 +1,8 @@
-from flask import Flask, render_template, redirect, url_for, request
-from flask_login import LoginManager, current_user
-from models import db, User, Line, ScrapReason
+from flask import Flask, render_template, redirect, url_for, request, flash
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from models import db, User, Line, ScrapReason, ScrapRecord
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -29,34 +31,12 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-@app.route("/")
-def home():
-    return redirect(url_for("login"))
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-
-    if request.method == "POST":
-
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "HG" and password == "123":
-            return redirect(url_for("dashboard"))
-
-    return render_template("login.html")
-
-@app.route("/dashboard")
-def dashboard():
-    return """
-    <h1>Scrap Tracker Dashboard</h1>
-    <p>Login Successful</p>
-    <a href='/add-scrap'>Add Scrap Record</a>
-    """
-
+# ------------------------
+# DEFAULT DATA
+# ------------------------
 
 def seed_defaults():
+
     lines = [
         "Trim 1",
         "Trim 2 / IP",
@@ -87,8 +67,116 @@ def seed_defaults():
         if not ScrapReason.query.filter_by(name=reason).first():
             db.session.add(ScrapReason(name=reason))
 
+    if not User.query.filter_by(username="admin").first():
+        admin = User(
+            username="admin",
+            password_hash=generate_password_hash("admin123"),
+            role="admin"
+        )
+        db.session.add(admin)
+
     db.session.commit()
 
+
+# ------------------------
+# ROUTES
+# ------------------------
+
+@app.route("/")
+def home():
+    return redirect(url_for("login"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password_hash, password):
+            login_user(user)
+            return redirect(url_for("dashboard"))
+
+        flash("Invalid username or password")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+
+@app.route("/dashboard")
+@login_required
+def dashboard():
+
+    records = ScrapRecord.query.order_by(
+        ScrapRecord.created_at.desc()
+    ).limit(25).all()
+
+    today = datetime.utcnow().date()
+
+    today_qty = sum(
+        r.quantity
+        for r in records
+        if r.created_at.date() == today
+    )
+
+    total_qty = sum(r.quantity for r in records)
+
+    return render_template(
+        "dashboard.html",
+        records=records,
+        today_qty=today_qty,
+        total_qty=total_qty
+    )
+
+
+@app.route("/add-scrap", methods=["GET", "POST"])
+@login_required
+def add_scrap():
+
+    lines = Line.query.order_by(Line.name).all()
+    reasons = ScrapReason.query.order_by(ScrapReason.name).all()
+
+    if request.method == "POST":
+
+        record = ScrapRecord(
+            part_number=request.form["part_number"],
+            part_name=request.form["part_name"],
+            quantity=int(request.form["quantity"]),
+            reason=request.form["reason"],
+            other_reason=request.form.get("other_reason"),
+            origin_line=request.form["origin_line"],
+            destination_line=request.form["destination_line"],
+            comments=request.form.get("comments"),
+            submitted_by=current_user.username
+        )
+
+        db.session.add(record)
+        db.session.commit()
+
+        flash("Scrap record added successfully")
+
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "add_scrap.html",
+        lines=lines,
+        reasons=reasons
+    )
+
+
+# ------------------------
+# STARTUP
+# ------------------------
 
 with app.app_context():
     db.create_all()
