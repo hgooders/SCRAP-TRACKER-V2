@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: scrap-tracker
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    plan: free
+
+databases:
+  - name: scrap-tracker-db
+    plan: free
