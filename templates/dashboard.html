@@ -4,71 +4,154 @@
 
 <div class="row mb-4">
 
-    <div class="col-md-6">
-        <div class="card p-4">
-            <h5>Today's Scrap</h5>
-            <div class="kpi">
+    <div class="col-md-3 mb-3">
+        <div class="card p-4 text-center">
+            <h6>Today's Scrap</h6>
+            <div class="kpi text-danger">
                 {{ today_qty }}
             </div>
         </div>
     </div>
 
-    <div class="col-md-6">
-        <div class="card p-4">
-            <h5>Total Scrap</h5>
+    <div class="col-md-3 mb-3">
+        <div class="card p-4 text-center">
+            <h6>Total Scrap</h6>
             <div class="kpi">
                 {{ total_qty }}
             </div>
         </div>
     </div>
 
+    <div class="col-md-3 mb-3">
+        <div class="card p-4 text-center">
+            <h6>This Week</h6>
+            <div class="kpi">
+                Coming Soon
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card p-4 text-center">
+            <h6>This Month</h6>
+            <div class="kpi">
+                Coming Soon
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<div class="mb-3">
+<div class="row mb-4">
 
-    <a href="/add-scrap" class="btn btn-danger">
-        Add Scrap Record
-    </a>
+    <div class="col-md-6 mb-3">
+
+        <div class="card p-4">
+
+            <h5 class="mb-3">
+                Quick Actions
+            </h5>
+
+            <a href="/add-scrap" class="btn btn-danger mb-2">
+                Add Scrap Record
+            </a>
+
+            <a href="/reports" class="btn btn-secondary mb-2">
+                Reports
+            </a>
+
+            <button class="btn btn-success" disabled>
+                Excel Export (Coming Soon)
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6 mb-3">
+
+        <div class="card p-4">
+
+            <h5 class="mb-3">
+                Future Features
+            </h5>
+
+            <ul>
+                <li>Scrap By Reason Graph</li>
+                <li>Scrap By Line Graph</li>
+                <li>Photo Uploads</li>
+                <li>Excel Export</li>
+                <li>Date Filtering</li>
+            </ul>
+
+        </div>
+
+    </div>
 
 </div>
 
-<div class="card p-3">
+<div class="card p-4">
 
     <h4 class="mb-3">
         Recent Scrap Records
     </h4>
 
-    <table class="table table-striped">
+    <div class="table-responsive">
 
-        <thead>
+        <table class="table table-striped table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>Date</th>
+                    <th>Part Name</th>
+                    <th>Qty</th>
+                    <th>Reason</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for record in records %}
+
             <tr>
-                <th>Date</th>
-                <th>Part</th>
-                <th>Qty</th>
-                <th>Reason</th>
-                <th>Origin</th>
-                <th>Destination</th>
+
+                <td>
+                    {{ record.created_at.strftime('%d/%m/%Y %H:%M') }}
+                </td>
+
+                <td>
+                    {{ record.part_name }}
+                </td>
+
+                <td>
+                    {{ record.quantity }}
+                </td>
+
+                <td>
+                    {{ record.reason }}
+                </td>
+
+                <td>
+                    {{ record.origin_line }}
+                </td>
+
+                <td>
+                    {{ record.destination_line }}
+                </td>
+
             </tr>
-        </thead>
 
-        <tbody>
+            {% endfor %}
 
-        {% for record in records %}
+            </tbody>
 
-        <tr>
-            <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
-            <td>{{ record.part_name }}</td>
-            <td>{{ record.quantity }}</td>
-            <td>{{ record.reason }}</td>
-            <td>{{ record.origin_line }}</td>
-            <td>{{ record.destination_line }}</td>
-        </tr>
+        </table>
 
-        {% endfor %}
-
-        </tbody>
-
-    </table>
+    </div>
 
 </div>
 
