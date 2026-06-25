@@ -125,9 +125,9 @@ def seed_defaults():
     ).first():
 
         admin = User(
-            username="admin",
+            username="34075",
             password_hash=generate_password_hash(
-                "admin123"
+                "SPACE"
             ),
             role="admin"
         )
