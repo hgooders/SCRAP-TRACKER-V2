@@ -217,7 +217,6 @@ def logout():
 def dashboard():
 
     all_records = ScrapRecord.query.all()
-
     today = datetime.utcnow().date()
 
     today_records = [
@@ -228,14 +227,12 @@ def dashboard():
     today_qty = sum(r.quantity for r in today_records)
 
     week_qty = sum(
-        r.quantity
-        for r in all_records
+        r.quantity for r in all_records
         if (today - r.created_at.date()).days <= 7
     )
 
     month_qty = sum(
-        r.quantity
-        for r in all_records
+        r.quantity for r in all_records
         if r.created_at.month == today.month
         and r.created_at.year == today.year
     )
@@ -272,7 +269,6 @@ def dashboard():
     line_statuses = []
 
     for line in factory_lines:
-
         count = line_counter.get(line, 0)
 
         if count == 0:
@@ -298,9 +294,9 @@ def dashboard():
 
     line_lookup = {}
 
-for line in line_statuses:
-    line_lookup[line["name"]] = line
-    
+    for line in line_statuses:
+        line_lookup[line["name"]] = line
+
     return render_template(
         "dashboard.html",
         records=records,
