@@ -191,39 +191,51 @@ def logout():
 def dashboard():
 
     all_records = ScrapRecord.query.all()
-
     today = datetime.utcnow().date()
 
     today_qty = sum(
-        r.quantity
-        for r in all_records
+        r.quantity for r in all_records
         if r.created_at.date() == today
     )
 
     week_qty = sum(
-        r.quantity
-        for r in all_records
-        if (
-            today - r.created_at.date()
-        ).days <= 7
+        r.quantity for r in all_records
+        if (today - r.created_at.date()).days <= 7
     )
 
     month_qty = sum(
-        r.quantity
-        for r in all_records
+        r.quantity for r in all_records
         if r.created_at.month == today.month
         and r.created_at.year == today.year
     )
 
     total_qty = sum(
-        r.quantity
-        for r in all_records
+        r.quantity for r in all_records
     )
 
     records = ScrapRecord.query.order_by(
         ScrapRecord.created_at.desc()
     ).limit(25).all()
 
+    reason_counter = Counter()
+    line_counter = Counter()
+
+    for record in all_records:
+        reason_counter[record.reason] += record.quantity
+        line_counter[record.origin_line] += record.quantity
+
+    return render_template(
+        "dashboard.html",
+        records=records,
+        today_qty=today_qty,
+        week_qty=week_qty,
+        month_qty=month_qty,
+        total_qty=total_qty,
+        reason_labels=list(reason_counter.keys()),
+        reason_values=list(reason_counter.values()),
+        line_labels=list(line_counter.keys()),
+        line_values=list(line_counter.values())
+    )
     
 @app.route("/add-scrap", methods=["GET", "POST"])
 @login_required
