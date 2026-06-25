@@ -7,7 +7,7 @@ from flask import (
     flash,
     send_file
 )
-from collections import Counter
+from collections import Counter 
 
 from flask_login import (
     LoginManager,
@@ -22,13 +22,10 @@ from werkzeug.security import (
     check_password_hash
 )
 
-from models import (
-    db,
-    User,
-    Line,
-    ScrapReason,
-    ScrapRecord
-)
+from werkzeug.utils import secure_filename
+from models import db, User, Line, ScrapReason, ScrapRecord, ScrapPhoto
+import uuid
+
 
 from datetime import datetime, timedelta
 from io import BytesIO
@@ -49,6 +46,19 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
 )
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+
+def allowed_file(filename):
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
+
 
 db.init_app(app)
 
@@ -252,58 +262,57 @@ def add_scrap():
     if request.method == "POST":
 
         record = ScrapRecord(
-            part_number=request.form[
-                "part_number"
-            ],
-
-            part_name=request.form[
-                "part_name"
-            ],
-
-            quantity=int(
-                request.form["quantity"]
-            ),
-
-            reason=request.form[
-                "reason"
-            ],
-
-            other_reason=request.form.get(
-                "other_reason"
-            ),
-
-            origin_line=request.form[
-                "origin_line"
-            ],
-
-            destination_line=request.form[
-                "destination_line"
-            ],
-
-            comments=request.form.get(
-                "comments"
-            ),
-
+            part_number=request.form["part_number"],
+            part_name=request.form["part_name"],
+            quantity=int(request.form["quantity"]),
+            reason=request.form["reason"],
+            other_reason=request.form.get("other_reason"),
+            origin_line=request.form["origin_line"],
+            destination_line=request.form["destination_line"],
+            comments=request.form.get("comments"),
             submitted_by=current_user.username
         )
 
         db.session.add(record)
         db.session.commit()
 
-        flash(
-            "Scrap record added successfully"
-        )
+        photos = request.files.getlist("photos")
 
-        return redirect(
-            url_for("dashboard")
-        )
+        for photo in photos:
+
+            if photo and photo.filename != "" and allowed_file(photo.filename):
+
+                original_filename = secure_filename(photo.filename)
+
+                extension = original_filename.rsplit(".", 1)[1].lower()
+
+                unique_filename = f"{uuid.uuid4().hex}.{extension}"
+
+                save_path = os.path.join(
+                    app.config["UPLOAD_FOLDER"],
+                    unique_filename
+                )
+
+                photo.save(save_path)
+
+                scrap_photo = ScrapPhoto(
+                    scrap_record_id=record.id,
+                    filename=unique_filename
+                )
+
+                db.session.add(scrap_photo)
+
+        db.session.commit()
+
+        flash("Scrap record added successfully")
+
+        return redirect(url_for("dashboard"))
 
     return render_template(
         "add_scrap.html",
         lines=lines,
         reasons=reasons
     )
-
 
 @app.route("/reports")
 @login_required
