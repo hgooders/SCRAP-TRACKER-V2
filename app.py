@@ -241,20 +241,20 @@ for r in all_records:
 
 line_labels = list(line_counter.keys())
 line_values = list(line_counter.values())
-    
-    return render_template(
+
+return render_template(
         "dashboard.html",
        records=records,
-today_qty=today_qty,
-week_qty=week_qty,
-month_qty=month_qty,
-total_qty=total_qty,
+       today_qty=today_qty,
+       week_qty=week_qty,
+       month_qty=month_qty,
+       total_qty=total_qty,
 
-reason_labels=reason_labels,
-reason_values=reason_values,
+       reason_labels=reason_labels,
+       reason_values=reason_values,
 
-line_labels=line_labels,
-line_values=line_values
+       line_labels=line_labels,
+       line_values=line_values
 
     )
 
