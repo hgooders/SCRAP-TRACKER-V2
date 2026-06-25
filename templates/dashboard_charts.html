@@ -1,0 +1,59 @@
+<div class="row g-4 mb-4">
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <h5 class="fw-bold">Scrap by Reason</h5>
+            <div style="height:300px;">
+                <canvas id="reasonChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <h5 class="fw-bold">Scrap by Line</h5>
+            <div style="height:300px;">
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const reasonLabels = {{ reason_labels | tojson }};
+const reasonValues = {{ reason_values | tojson }};
+const lineLabels = {{ line_labels | tojson }};
+const lineValues = {{ line_values | tojson }};
+
+new Chart(document.getElementById("reasonChart"), {
+    type: "bar",
+    data: {
+        labels: reasonLabels,
+        datasets: [{
+            label: "Scrap Quantity",
+            data: reasonValues
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
+new Chart(document.getElementById("lineChart"), {
+    type: "bar",
+    data: {
+        labels: lineLabels,
+        datasets: [{
+            label: "Scrap Quantity",
+            data: lineValues
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: "y"
+    }
+});
+</script>
