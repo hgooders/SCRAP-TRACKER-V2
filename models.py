@@ -41,6 +41,7 @@ class ScrapRecord(db.Model):
 
     part_number = db.Column(db.String(100), nullable=False)
     part_name = db.Column(db.String(200), nullable=False)
+    body_number = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
 
     reason = db.Column(db.String(100), nullable=False)
