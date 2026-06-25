@@ -11,6 +11,8 @@ from collections import Counter
 
 from functools import wraps
 
+from sqlalchemy import text
+
 from flask_login import (
     LoginManager,
     login_user,
