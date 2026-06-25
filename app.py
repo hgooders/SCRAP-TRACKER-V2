@@ -378,6 +378,43 @@ def export_excel():
         )
     )
 
+@app.route("/delete-record/<int:record_id>", methods=["POST"])
+
+@login_required
+
+def delete_record(record_id):
+
+
+
+    record = ScrapRecord.query.get_or_404(
+
+        record_id
+
+    )
+
+
+
+    db.session.delete(record)
+
+
+
+    db.session.commit()
+
+
+
+    flash(
+
+        "Scrap record deleted successfully."
+
+    )
+
+
+
+    return redirect(
+
+        url_for("reports")
+
+    )
 
 # ------------------------
 # STARTUP
