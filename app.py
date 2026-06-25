@@ -110,7 +110,7 @@ def seed_defaults():
         "Snapped Tab",
         "Tuck",
         "Deformity",
-        "Other"
+        "Other",
         "Crease"
     ]
 
