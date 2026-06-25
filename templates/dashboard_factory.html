@@ -1,18 +1,20 @@
 <div class="card shadow-lg border-0 rounded-4 mb-4">
 
-    <div class="card-header bg-white">
+    <div class="card-header bg-white py-3">
 
         <div class="row align-items-center">
 
-            <!-- LEFT STATUS PANEL -->
-
             <div class="col-lg-3">
 
-                <h4 class="fw-bold mb-3">
-                    Production Line Status
+                <h4 class="fw-bold mb-1">
+                    PRODUCTION LINE STATUS
                 </h4>
 
-                <div class="factory-status-list">
+                <small class="text-muted">
+                    Live Factory Status
+                </small>
+
+                <div class="factory-status-list mt-4">
 
                     {% for line in line_statuses %}
 
@@ -44,125 +46,169 @@
 
             </div>
 
-            <!-- FACTORY -->
-
             <div class="col-lg-9">
 
                 <div class="factory-map">
-
-                    <!-- Background -->
 
                     <img
                         src="{{ url_for('static', filename='images/factory-layout.png') }}"
                         class="factory-image">
 
-                    <!-- Production Lines -->
-
                     <div class="factory-overlay">
 
-                        <!-- ENGINE -->
+<!-- TOP BUILDING -->
 
-                        <div class="production-bar engine green">
+<div class="production-bar engine {{ line_lookup['Engine Line'].colour }}">
 
-                            ENGINE LINE
+    ENGINE LINE
 
-                        </div>
+    <span class="line-total">
 
-                        <!-- CHASSIS 1 -->
+        {{ line_lookup['Engine Line'].count }}
 
-                        <div class="production-bar chassis1 amber">
+    </span>
 
-                            CHASSIS 1
+</div>
 
-                        </div>
+<div class="production-bar trim1 {{ line_lookup['Trim 1'].colour }}">
 
-                        <!-- CHASSIS 2 -->
+    TRIM 1
 
-                        <div class="production-bar chassis2 green">
+    <span class="line-total">
 
-                            CHASSIS 2
+        {{ line_lookup['Trim 1'].count }}
 
-                        </div>
+    </span>
 
-                        <!-- CHASSIS 3 -->
+</div>
 
-                        <div class="production-bar chassis3 green">
+<div class="production-bar trim2 {{ line_lookup['IP Line'].colour }}">
 
-                            CHASSIS 3
+    TRIM2 / IP 
 
-                        </div>
+    <span class="line-total">
 
-                        <!-- IP -->
+        {{ line_lookup['IP Line'].count }}
 
-                        <div class="production-bar ip green">
+    </span>
 
-                            IP LINE
+</div>
 
-                        </div>
+<!-- MIDDLE BUILDING -->
 
-                        <!-- OTHER -->
+<div class="production-bar ip {{ line_lookup['Trim 2'].colour }}">
 
-                        <div class="production-bar other green">
+  Trim 2
 
-                            OTHER PROCESS
+    <span class="line-total">
 
-                        </div>
+        {{ line_lookup['Trim 2'].count }}
 
-                        <!-- TRIM 2 -->
+    </span>
 
-                        <div class="production-bar trim2 green">
+</div>
+                        
+<div class="production-bar chassis1 {{ line_lookup['Chassis 1'].colour }}">
 
-                            TRIM 2
+    CHASSIS 1
 
-                        </div>
+    <span class="line-total">
 
-                        <!-- DOOR -->
+        {{ line_lookup['Chassis 1'].count }}
 
-                        <div class="production-bar door green">
+    </span>
 
-                            DOOR LINE
+</div>
 
-                        </div>
+<div class="production-bar chassis2 {{ line_lookup['Chassis 2'].colour }}">
 
-                        <!-- TRIM 1 -->
+    CHASSIS 2
 
-                        <div class="production-bar trim1 green">
+    <span class="line-total">
 
-                            TRIM 1
+        {{ line_lookup['Chassis 2'].count }}
 
-                        </div>
+    </span>
 
-                        <!-- FINAL 2 -->
+</div>
 
-                        <div class="production-bar final2 green">
+<div class="production-bar chassis3 {{ line_lookup['Chassis 3'].colour }}">
 
-                            FINAL 2
+    CHASSIS 3
 
-                        </div>
+    <span class="line-total">
 
-                        <!-- FINAL 1 -->
+        {{ line_lookup['Chassis 3'].count }}
 
-                        <div class="production-bar final1 red">
+    </span>
 
-                            FINAL 1
+</div>
 
-                        </div>
+<div class="production-bar other {{ line_lookup['Other Process Areas'].colour }}">
 
-                        <!-- QA -->
+    OTHER PROCESS
 
-                        <div class="production-bar qa green">
+    <span class="line-total">
 
-                            QA
+        {{ line_lookup['Other Process Areas'].count }}
 
-                        </div>
+    </span>
 
-                        <!-- SSA -->
+</div>
 
-                        <div class="production-bar ssa green">
+<!-- LOWER BUILDING -->
 
-                            SSA
+<div class="production-bar door {{ line_lookup['Door Line'].colour }}">
 
-                        </div>
+    DOOR LINE
+
+    <span class="line-total">
+        {{ line_lookup['Door Line'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar final1 {{ line_lookup['Final 1'].colour }}">
+
+    FINAL 1
+
+    <span class="line-total">
+        {{ line_lookup['Final 1'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar final2 {{ line_lookup['Final 2'].colour }}">
+
+    FINAL 2
+
+    <span class="line-total">
+        {{ line_lookup['Final 2'].count }}
+    </span>
+
+</div>
+
+<!-- SIDE BUILDING -->
+
+<div class="production-bar qa {{ line_lookup['QA'].colour }}">
+
+    QA
+
+    <span class="line-total">
+        {{ line_lookup['QA'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar ssa {{ line_lookup['SSA'].colour }}">
+
+    SSA
+
+    <span class="line-total">
+        {{ line_lookup['SSA'].count }}
+    </span>
+
+</div>
 
                     </div>
 
@@ -175,6 +221,7 @@
     </div>
 
 </div>
+                        
 
 <style>
 
@@ -184,15 +231,15 @@
 
     width:100%;
 
-    height:620px;
-
-    border-radius:18px;
+    height:760px;
 
     overflow:hidden;
 
-    background:#dfe5ea;
+    border-radius:22px;
 
-    box-shadow:inset 0 0 30px rgba(0,0,0,.25);
+    background:#eef2f5;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.18);
 
 }
 
@@ -200,15 +247,15 @@
 
     position:absolute;
 
+    inset:0;
+
     width:100%;
 
     height:100%;
 
     object-fit:cover;
 
-    left:0;
-
-    top:0;
+    opacity:.95;
 
 }
 
@@ -220,13 +267,19 @@
 
 }
 
+/* LEFT PANEL */
+
 .factory-status-list{
 
     display:flex;
 
     flex-direction:column;
 
-    gap:14px;
+    gap:12px;
+
+    max-height:700px;
+
+    overflow-y:auto;
 
 }
 
@@ -238,13 +291,11 @@
 
     align-items:center;
 
-    padding:14px 18px;
+    padding:12px 16px;
 
-    background:white;
+    border-radius:12px;
 
-    border-radius:14px;
-
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    background:#f8f9fa;
 
 }
 
@@ -254,143 +305,226 @@
 
     align-items:center;
 
-    gap:12px;
+    gap:10px;
 
 }
 
 .status-light{
 
-    width:18px;
+    width:16px;
 
-    height:18px;
+    height:16px;
 
     border-radius:50%;
 
 }
 
 .status-light.green{
-
-    background:#2ecc71;
-
+    background:#32c95b;
 }
 
 .status-light.amber{
-
-    background:#f1c40f;
-
+    background:#f5b301;
 }
 
 .status-light.red{
-
-    background:#e74c3c;
-
+    background:#d62828;
+    animation:pulse 1s infinite;
 }
 
-.status-count{
-
-    background:#f4f4f4;
-
-    border-radius:999px;
-
-    padding:4px 14px;
+.status-name{
 
     font-weight:700;
 
 }
 
+.status-count{
+
+    font-size:20px;
+
+    font-weight:800;
+
+}
+
+/* PRODUCTION BARS */
+
 .production-bar{
 
     position:absolute;
 
-    height:56px;
+    height:52px;
 
-    border-radius:8px;
-
-    color:white;
-
-    font-weight:800;
+    border-radius:30px;
 
     display:flex;
 
     align-items:center;
 
-    justify-content:center;
+    justify-content:space-between;
 
-    border:2px solid rgba(255,255,255,.45);
+    padding:0 18px;
 
-    text-transform:uppercase;
+    color:white;
 
-    letter-spacing:.5px;
+    font-weight:800;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.30);
+
+    border:2px solid rgba(255,255,255,.35);
+
+    letter-spacing:.4px;
 
 }
 
 .production-bar.green{
 
-    background:#4CAF50;
+    background:linear-gradient(90deg,#2ecc71,#1e9f53);
 
 }
 
 .production-bar.amber{
 
-    background:#D4A017;
+    background:linear-gradient(90deg,#f4b400,#d48c00);
 
 }
 
 .production-bar.red{
 
-    background:#C0392B;
+    background:linear-gradient(90deg,#e53935,#a30000);
+
+    animation:pulse 1s infinite;
 
 }
+
+.line-total{
+
+    background:rgba(255,255,255,.18);
+
+    padding:4px 12px;
+
+    border-radius:20px;
+
+    margin-left:15px;
+
+}
+
+/* POSITIONS */
+
+/* TOP */
 
 .engine{
-
-    left:28%;
-
-    top:8%;
-
-    width:24%;
-
+    left:30%;
+    top:6%;
+    width:34%;
 }
 
+.ssa{
+    right:3%;
+    top:8%;
+    width:11%;
+    height:220px;
+}
+
+/* ROW 2 */
+
 .chassis1{
-
-    left:33%;
-
-    top:32%;
-
-    width:23%;
-
+    left:18%;
+    top:24%;
+    width:28%;
 }
 
 .chassis2{
+    left:54%;
+    top:24%;
+    width:28%;
+}
 
-    left:56%;
+/* ROW 3 */
 
-    top:32%;
+.chassis3{
+    left:18%;
+    top:38%;
+    width:28%;
+}
 
-    width:23%;
+.other{
+    left:54%;
+    top:38%;
+    width:28%;
+}
 
+/* ROW 4 */
+
+.ip{
+    left:18%;
+    top:52%;
+    width:28%;
+}
+
+.trim2{
+    left:54%;
+    top:52%;
+    width:28%;
+}
+
+/* ROW 5 */
+
+.door{
+    left:18%;
+    top:66%;
+    width:28%;
+}
+
+.trim1{
+    left:54%;
+    top:66%;
+    width:28%;
+}
+
+/* ROW 6 */
+
+.final2{
+    left:18%;
+    top:80%;
+    width:28%;
 }
 
 .final1{
-
-    left:33%;
-
-    top:63%;
-
-    width:23%;
-
+    left:54%;
+    top:80%;
+    width:28%;
 }
 
-.final2{
+/* QA */
 
-    left:56%;
+.qa{
+    right:3%;
+    bottom:6%;
+    width:11%;
+}
+/* ANIMATION */
 
-    top:63%;
+@keyframes pulse{
 
-    width:23%;
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.03);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
 
 }
 
 </style>
-
+                        
