@@ -1,0 +1,103 @@
+<div class="row g-4 mb-4">
+
+    <div class="col-xl">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+
+                <div class="text-muted text-uppercase fw-bold small">
+                    Today's Scrap
+                </div>
+
+                <h1 class="display-4 fw-bold text-danger mb-0">
+                    {{ today_qty }}
+                </h1>
+
+                <div class="text-muted">
+                    Parts Reported
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+
+                <div class="text-muted text-uppercase fw-bold small">
+                    This Week
+                </div>
+
+                <h1 class="display-4 fw-bold text-primary mb-0">
+                    {{ week_qty }}
+                </h1>
+
+                <div class="text-muted">
+                    Weekly Total
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+
+                <div class="text-muted text-uppercase fw-bold small">
+                    This Month
+                </div>
+
+                <h1 class="display-4 fw-bold text-success mb-0">
+                    {{ month_qty }}
+                </h1>
+
+                <div class="text-muted">
+                    Monthly Total
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+
+                <div class="text-muted text-uppercase fw-bold small">
+                    Total Scrap
+                </div>
+
+                <h1 class="display-4 fw-bold mb-0">
+                    {{ total_qty }}
+                </h1>
+
+                <div class="text-muted">
+                    Database Total
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body">
+
+                <div class="text-muted text-uppercase fw-bold small">
+                    Production Lines
+                </div>
+
+                <h1 class="display-4 fw-bold text-secondary mb-0">
+                    {{ line_statuses|length }}
+                </h1>
+
+                <div class="text-muted">
+                    Live Status
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
