@@ -80,6 +80,7 @@ def seed_defaults():
 
     lines = [
         "QA"
+        
         "Trim 1",
         "Trim 2 / IP",
         "Chassis 1",
