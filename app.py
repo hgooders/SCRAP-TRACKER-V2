@@ -264,7 +264,7 @@ def add_scrap():
         record = ScrapRecord(
             part_number=request.form["part_number"],
             part_name=request.form["part_name"],
-            body_number=request.form["body_number"]
+            body_number=request.form["body_number"],
             quantity=int(request.form["quantity"]),
             reason=request.form["reason"],
             other_reason=request.form.get("other_reason"),
