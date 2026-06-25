@@ -139,7 +139,7 @@ def seed_defaults():
 
     admin = User.query.filter_by(username="HG").first()
 
-if not HG:
+if not admin:
     admin = User(
         username="HG",
         password_hash=generate_password_hash("HG"),
