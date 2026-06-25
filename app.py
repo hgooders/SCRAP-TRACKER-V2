@@ -224,38 +224,7 @@ def dashboard():
         ScrapRecord.created_at.desc()
     ).limit(25).all()
 
-    # Scrap by Reason
-reason_counter = Counter()
-
-for r in all_records:
-    reason_counter[r.reason] += r.quantity
-
-reason_labels = list(reason_counter.keys())
-reason_values = list(reason_counter.values())
-
-# Scrap by Origin Line
-line_counter = Counter()
-
-for r in all_records:
-    line_counter[r.origin_line] += r.quantity
-
-line_labels = list(line_counter.keys())
-line_values = list(line_counter.values())
-
-return render_template(
-    "dashboard.html",
- records=records,
-today_qty=today_qty,
-week_qty=week_qty,
-month_qty=month_qty,
-total_qty=total_qty,
-
-reason_labels=reason_labels,
-reason_values=reason_values,
-
-line_labels=line_labels,
-line_values=line_values
-
+   
 
 
 )
