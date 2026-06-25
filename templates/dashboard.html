@@ -1,554 +1,145 @@
 {% extends "base.html" %}
 
-
-
 {% block content %}
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-
 <div class="row g-3 mb-4">
 
-
-
-    <div class="col-lg-3 col-md-6">
-
+    <div class="col-md-3">
         <div class="card p-4 text-center">
-
-            <h6 class="text-muted">Today's Scrap</h6>
-
+            <h6>Today's Scrap</h6>
             <div class="kpi text-danger">{{ today_qty }}</div>
-
         </div>
-
     </div>
 
-
-
-    <div class="col-lg-3 col-md-6">
-
+    <div class="col-md-3">
         <div class="card p-4 text-center">
-
-            <h6 class="text-muted">This Week</h6>
-
+            <h6>This Week</h6>
             <div class="kpi text-primary">{{ week_qty }}</div>
-
         </div>
-
     </div>
 
-
-
-    <div class="col-lg-3 col-md-6">
-
+    <div class="col-md-3">
         <div class="card p-4 text-center">
-
-            <h6 class="text-muted">This Month</h6>
-
+            <h6>This Month</h6>
             <div class="kpi text-success">{{ month_qty }}</div>
-
         </div>
-
     </div>
 
-
-
-    <div class="col-lg-3 col-md-6">
-
+    <div class="col-md-3">
         <div class="card p-4 text-center">
-
-            <h6 class="text-muted">Total Scrap</h6>
-
+            <h6>Total Scrap</h6>
             <div class="kpi">{{ total_qty }}</div>
-
         </div>
-
     </div>
 
-
-
 </div>
-
-
 
 <div class="row g-3 mb-4">
 
-
-
     <div class="col-lg-6">
-
-
-
-        <div class="card chart-card p-4">
-
-
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-
-
-
-                <h5>Scrap by Reason</h5>
-
-
-
-                <span class="badge bg-danger">
-
-                    Live
-
-                </span>
-
-
-
+        <div class="card p-4">
+            <h5>Scrap by Reason</h5>
+            <div style="height:320px;">
+                <canvas id="reasonChart"></canvas>
             </div>
-
-
-        <div style="height:320px;">
-            <canvas id="reasonChart"></canvas>
         </div>
-
-
-        </div>
-
-
-
     </div>
 
-
-
     <div class="col-lg-6">
-
-
-
-        <div class="card chart-card p-4">
-
-
-
-            <div class="d-flex justify-content-between align-items-center mb-3">
-
-
-
-                <h5>Scrap by Origin Line</h5>
-
-
-
-                <span class="badge bg-primary">
-
-                    Live
-
-                </span>
-
-
-
+        <div class="card p-4">
+            <h5>Scrap by Origin Line</h5>
+            <div style="height:320px;">
+                <canvas id="lineChart"></canvas>
             </div>
-
-
-        <div style="height:320px;">
-            <canvas id="lineChart"></canvas>
-         </div>
-
-
-
         </div>
-
-
-
     </div>
-
-
 
 </div>
 
-
-
-<div class="row g-3 mb-4">
-
-
-
-    <div class="col-lg-6">
-
-
-
-        <div class="card p-4">
-
-
-
-            <h5 class="mb-3">
-
-                Quick Actions
-
-            </h5>
-
-
-
-            <div class="d-grid gap-2">
-
-
-
-                <a href="/add-scrap" class="btn btn-danger">
-
-                    ➕ Add Scrap Record
-
-                </a>
-
-
-
-                <a href="/reports" class="btn btn-secondary">
-
-                    📊 Reports
-
-                </a>
-
-
-
-                <a href="/export-excel" class="btn btn-success">
-
-                    📥 Export Excel
-
-                </a>
-
-
-
-            </div>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
-
-    <div class="col-lg-6">
-
-
-
-        <div class="card p-4">
-
-
-
-            <h5 class="mb-3">
-
-                System Status
-
-            </h5>
-
-
-
-            <table class="table table-borderless">
-
-
-
-                <tr>
-
-                    <td>Database</td>
-
-                    <td><span class="badge bg-success">Online</span></td>
-
-                </tr>
-
-
-
-                <tr>
-
-                    <td>Reports</td>
-
-                    <td><span class="badge bg-success">Enabled</span></td>
-
-                </tr>
-
-
-
-                <tr>
-
-                    <td>Excel Export</td>
-
-                    <td><span class="badge bg-success">Enabled</span></td>
-
-                </tr>
-
-
-
-                <tr>
-
-                    <td>Photo Uploads</td>
-
-                    <td><span class="badge bg-warning text-dark">Coming Soon</span></td>
-
-                </tr>
-
-
-
-            </table>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
-
+<div class="mb-3">
+    <a href="/add-scrap" class="btn btn-danger">Add Scrap Record</a>
+    <a href="/reports" class="btn btn-secondary">Reports</a>
+    <a href="/export-excel" class="btn btn-success">Export Excel</a>
 </div>
-
-
 
 <div class="card p-4">
 
-
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-
-
-
-        <h4>
-
-            Recent Scrap Records
-
-        </h4>
-
-
-
-        <span class="badge bg-dark">
-
-            {{ records|length }} Records
-
-        </span>
-
-
-
-    </div>
-
-
+    <h4 class="mb-3">Recent Scrap Records</h4>
 
     <div class="table-responsive">
 
-
-
         <table class="table table-hover">
 
-
-
             <thead class="table-dark">
-
-
-
                 <tr>
-
-
-
                     <th>Date</th>
-
                     <th>Part Number</th>
-
                     <th>Part Name</th>
-
                     <th>Qty</th>
-
                     <th>Reason</th>
-
                     <th>Origin</th>
-
                     <th>Destination</th>
-
-
-
                 </tr>
-
-
-
             </thead>
 
-
-
             <tbody>
-
-
-
             {% for record in records %}
-
-
-
-            <tr>
-
-
-
-                <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
-
-
-
-                <td>{{ record.part_number }}</td>
-
-
-
-                <td>{{ record.part_name }}</td>
-
-
-
-                <td>{{ record.quantity }}</td>
-
-
-
-                <td>{{ record.reason }}</td>
-
-
-
-                <td>{{ record.origin_line }}</td>
-
-
-
-                <td>{{ record.destination_line }}</td>
-
-
-
-            </tr>
-
-
-
+                <tr>
+                    <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ record.part_number }}</td>
+                    <td>{{ record.part_name }}</td>
+                    <td>{{ record.quantity }}</td>
+                    <td>{{ record.reason }}</td>
+                    <td>{{ record.origin_line }}</td>
+                    <td>{{ record.destination_line }}</td>
+                </tr>
             {% endfor %}
-
-
-
             </tbody>
-
-
 
         </table>
 
-
-
     </div>
-
-
 
 </div>
 
-
-
 <script>
+const reasonLabels = {{ reason_labels | tojson }};
+const reasonValues = {{ reason_values | tojson }};
+const lineLabels = {{ line_labels | tojson }};
+const lineValues = {{ line_values | tojson }};
 
-
-
-new Chart(document.getElementById("reasonChart"),{
-
-
-
-    type:"bar",
-
-
-
-    data:{
-
-
-
-        labels:["Loading..."],
-
-
-
-        datasets:[{
-
-
-
-            label:"Scrap",
-
-
-
-            data:[0]
-
-
-
+new Chart(document.getElementById("reasonChart"), {
+    type: "bar",
+    data: {
+        labels: reasonLabels,
+        datasets: [{
+            label: "Scrap Quantity",
+            data: reasonValues
         }]
-
-
-
     },
-
-
-
-    options:{
-
-
-
-        responsive:true,
-
-
-
-        maintainAspectRatio:false
-
-
-
+    options: {
+        responsive: true,
+        maintainAspectRatio: false
     }
-
-
-
 });
 
-
-
-new Chart(document.getElementById("lineChart"),{
-
-
-
-    type:"bar",
-
-
-
-    data:{
-
-
-
-        labels:["Loading..."],
-
-
-
-        datasets:[{
-
-
-
-            label:"Scrap",
-
-
-
-            data:[0]
-
-
-
+new Chart(document.getElementById("lineChart"), {
+    type: "bar",
+    data: {
+        labels: lineLabels,
+        datasets: [{
+            label: "Scrap Quantity",
+            data: lineValues
         }]
-
-
-
     },
-
-
-
-    options:{
-
-
-
-        responsive:true,
-
-
-
-        maintainAspectRatio:false
-
-
-
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        indexAxis: "y"
     }
-
-
-
 });
-
-
-
 </script>
-
-
 
 {% endblock %}
