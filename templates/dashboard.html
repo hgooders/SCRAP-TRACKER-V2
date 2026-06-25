@@ -5,7 +5,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-
     <div>
         <h2 class="fw-bold">Production Dashboard</h2>
         <p class="text-muted mb-0">Live Factory Overview</p>
@@ -14,11 +13,9 @@
     <div class="text-end">
         <span class="badge bg-success p-2">● LIVE</span>
         <div class="text-muted mt-2">
-            Last Updated:
-            <span id="lastUpdated"></span>
+            Last Updated: <span id="lastUpdated"></span>
         </div>
     </div>
-
 </div>
 
 <div class="row g-3 mb-4">
@@ -57,11 +54,35 @@
 
 </div>
 
+<div class="card p-4 mb-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Factory Line Status</h4>
+        <span class="badge bg-dark">Today</span>
+    </div>
+
+    <div class="factory-map">
+
+        {% for line in line_statuses %}
+
+        <div class="factory-line {{ line.colour }}">
+            <div class="line-title">{{ line.name }}</div>
+            <div class="line-icon">{{ line.icon }}</div>
+            <div class="line-count">{{ line.count }}</div>
+            <div class="line-label">{{ line.label }}</div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
 <div class="row g-3 mb-4">
 
     <div class="col-lg-6">
         <div class="card p-4">
-            <h5>Scrap by Reason</h5>
+            <h5>Scrap by Reason Today</h5>
             <div style="height:320px;">
                 <canvas id="reasonChart"></canvas>
             </div>
@@ -70,7 +91,7 @@
 
     <div class="col-lg-6">
         <div class="card p-4">
-            <h5>Scrap by Origin Line</h5>
+            <h5>Scrap by Origin Line Today</h5>
             <div style="height:320px;">
                 <canvas id="lineChart"></canvas>
             </div>
@@ -125,6 +146,109 @@
 
 </div>
 
+<style>
+.factory-map{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:18px;
+    background:linear-gradient(135deg,#eef2f7,#dfe6ee);
+    padding:25px;
+    border-radius:20px;
+}
+
+.factory-line{
+    min-height:135px;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    color:white;
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.factory-line.green{
+    background:linear-gradient(135deg,#2eaf4f,#1d7f38);
+}
+
+.factory-line.amber{
+    background:linear-gradient(135deg,#f5a623,#c77a00);
+}
+
+.factory-line.red{
+    background:linear-gradient(135deg,#e53935,#a80000);
+    animation:pulseRed 1.5s infinite;
+}
+
+.line-title{
+    font-weight:800;
+    font-size:1rem;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.line-icon{
+    font-size:2rem;
+}
+
+.line-count{
+    font-size:2.5rem;
+    font-weight:900;
+    line-height:1;
+}
+
+.line-label{
+    font-size:.85rem;
+    opacity:.9;
+    margin-top:5px;
+}
+
+@keyframes pulseRed{
+    0%{box-shadow:0 0 0 rgba(229,57,53,.5);}
+    50%{box-shadow:0 0 25px rgba(229,57,53,.9);}
+    100%{box-shadow:0 0 0 rgba(229,57,53,.5);}
+}
+
+.dashboard-kpi-card{
+    background:#ffffff;
+    border-left:6px solid #c00000;
+}
+
+.kpi-label{
+    font-size:.9rem;
+    color:#6c757d;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.kpi-number{
+    font-size:2.8rem;
+    font-weight:800;
+    line-height:1;
+    margin-top:10px;
+}
+
+.kpi-subtitle{
+    font-size:.85rem;
+    color:#8a8a8a;
+    margin-top:8px;
+}
+
+@media(max-width:900px){
+    .factory-map{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+    .factory-map{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
 <script>
 const reasonLabels = {{ reason_labels | tojson }};
 const reasonValues = {{ reason_values | tojson }};
@@ -164,7 +288,6 @@ new Chart(document.getElementById("lineChart"), {
 
 function updateClock(){
     const now = new Date();
-
     document.getElementById("lastUpdated").innerHTML =
         now.toLocaleTimeString();
 }
