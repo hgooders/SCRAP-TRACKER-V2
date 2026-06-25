@@ -137,7 +137,7 @@ def seed_defaults():
                 ScrapReason(name=reason)
             )
 
-    admin = User.query.filter_by(username="admin").first()
+    admin = User.query.filter_by(username="HG").first()
 
 if not admin:
     admin = User(
