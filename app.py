@@ -296,6 +296,11 @@ def dashboard():
             "icon": icon
         })
 
+    line_lookup = {}
+
+for line in line_statuses:
+    line_lookup[line["name"]] = line
+    
     return render_template(
         "dashboard.html",
         records=records,
@@ -307,7 +312,8 @@ def dashboard():
         reason_values=list(reason_counter.values()),
         line_labels=list(line_counter.keys()),
         line_values=list(line_counter.values()),
-        line_statuses=line_statuses
+        line_statuses=line_statuses,
+        line_lookup=line_lookup
     )
     
 @app.route("/add-scrap", methods=["GET", "POST"])
