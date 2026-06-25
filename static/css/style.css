@@ -1,1 +1,188 @@
+/* =====================================================
+   SCRAP TRACKER V3
+   ===================================================== */
 
+body{
+    background:#eef2f7;
+    font-family:Segoe UI,Arial,sans-serif;
+    color:#2c3e50;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    background:#c00000 !important;
+    box-shadow:0 3px 12px rgba(0,0,0,.15);
+}
+
+.navbar-brand{
+    color:white !important;
+    font-size:1.4rem;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.nav-btn{
+    margin-left:8px;
+    border-radius:10px;
+}
+
+/* ================= CARDS ================= */
+
+.card{
+
+    border:none;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+    transition:.25s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 12px 30px rgba(0,0,0,.12);
+
+}
+
+/* ================= KPI ================= */
+
+.kpi{
+
+    font-size:2.5rem;
+
+    font-weight:700;
+
+}
+
+.kpi-red{
+
+    color:#d90429;
+
+}
+
+.kpi-blue{
+
+    color:#0077b6;
+
+}
+
+.kpi-green{
+
+    color:#2a9d8f;
+
+}
+
+.kpi-dark{
+
+    color:#222;
+
+}
+
+/* ================= TABLE ================= */
+
+.table{
+
+    margin-bottom:0;
+
+}
+
+.table thead{
+
+    background:#343a40;
+
+    color:white;
+
+}
+
+.table-hover tbody tr:hover{
+
+    background:#f1f8ff;
+
+}
+
+/* ================= BUTTONS ================= */
+
+.btn{
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
+
+.btn-danger{
+
+    background:#c00000;
+
+    border:none;
+
+}
+
+.btn-danger:hover{
+
+    background:#a00000;
+
+}
+
+/* ================= TITLES ================= */
+
+h3,h4,h5{
+
+    font-weight:700;
+
+}
+
+/* ================= BADGES ================= */
+
+.badge{
+
+    font-size:.8rem;
+
+    padding:8px 12px;
+
+}
+
+/* ================= CHART CARDS ================= */
+
+.chart-card{
+
+    min-height:420px;
+
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+
+    text-align:center;
+
+    color:#888;
+
+    margin-top:40px;
+
+    margin-bottom:20px;
+
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .navbar-brand{
+
+        font-size:1rem;
+
+    }
+
+    .kpi{
+
+        font-size:2rem;
+
+    }
+
+}
