@@ -2,6 +2,32 @@
 
 {% block content %}
 
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold">
+            Production Dashboard
+        </h2>
+
+        <p class="text-muted mb-0">
+            Live Factory Overview
+        </p>
+    </div>
+
+    <div class="text-end">
+
+        <span class="badge bg-success p-2">
+            ● LIVE
+        </span>
+
+        <div class="text-muted mt-2">
+            Last Updated:
+            <span id="lastUpdated"></span>
+        </div>
+
+    </div>
+
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="row g-3 mb-4">
@@ -141,5 +167,34 @@ new Chart(document.getElementById("lineChart"), {
     }
 });
 </script>
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold">
+            Production Dashboard
+        </h2>
+
+        <p class="text-muted mb-0">
+            Live Factory Overview
+        </p>
+    </div>
+
+    <div class="text-end">
+
+        <span class="badge bg-success p-2">
+            ● LIVE
+        </span>
+
+        <div class="text-muted mt-2">
+            Last Updated:
+            <span id="lastUpdated"></span>
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
