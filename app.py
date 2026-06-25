@@ -264,6 +264,7 @@ def add_scrap():
         record = ScrapRecord(
             part_number=request.form["part_number"],
             part_name=request.form["part_name"],
+            body_number=request.form["body_number"]
             quantity=int(request.form["quantity"]),
             reason=request.form["reason"],
             other_reason=request.form.get("other_reason"),
@@ -271,6 +272,7 @@ def add_scrap():
             destination_line=request.form["destination_line"],
             comments=request.form.get("comments"),
             submitted_by=current_user.username
+        
         )
 
         db.session.add(record)
