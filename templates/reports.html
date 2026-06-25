@@ -1,177 +1,99 @@
 {% extends "base.html" %}
 
-
-
 {% block content %}
-
-
 
 <div class="card p-4">
 
-
-
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-
-
         <h3>
-
             Scrap Reports
-
         </h3>
 
-
-
-        <a href="/dashboard" class="btn btn-secondary">
-
-            Back to Dashboard
-
+        <a href="/export-excel" class="btn btn-success">
+            Export Excel
         </a>
 
-
-
     </div>
-
-
 
     <div class="table-responsive">
 
-
-
         <table class="table table-striped table-hover">
-
-
 
             <thead class="table-dark">
 
-
-
                 <tr>
-
                     <th>Date</th>
-
                     <th>Part Number</th>
-
                     <th>Part Name</th>
-
                     <th>Qty</th>
-
                     <th>Reason</th>
-
                     <th>Origin</th>
-
                     <th>Destination</th>
-
                     <th>User</th>
-
+                    <th>Photos</th>
                     <th>Action</th>
-
                 </tr>
-
-
 
             </thead>
 
-
-
             <tbody>
-
-
 
             {% for record in records %}
 
-
-
             <tr>
 
-
-
                 <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
-
-
-
                 <td>{{ record.part_number }}</td>
-
-
-
                 <td>{{ record.part_name }}</td>
-
-
-
                 <td>{{ record.quantity }}</td>
-
-
-
                 <td>{{ record.reason }}</td>
-
-
-
                 <td>{{ record.origin_line }}</td>
-
-
-
                 <td>{{ record.destination_line }}</td>
-
-
-
                 <td>{{ record.submitted_by }}</td>
 
-
-
                 <td>
-
-
-
-                    <form action="/delete-record/{{ record.id }}" method="POST">
-
-
-
-                        <button
-
-                            type="submit"
-
-                            class="btn btn-danger btn-sm"
-
-                            onclick="return confirm('Delete this scrap record?');"
-
-                        >
-
-                            Delete
-
-                        </button>
-
-
-
-                    </form>
-
-
-
+                    {% if record.photos %}
+                        {% for photo in record.photos %}
+                            <a
+                                href="{{ url_for('static', filename='uploads/' ~ photo.filename) }}"
+                                target="_blank"
+                            >
+                                <img
+                                    src="{{ url_for('static', filename='uploads/' ~ photo.filename) }}"
+                                    style="height:50px; width:50px; object-fit:cover; border-radius:6px; margin:2px;"
+                                >
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <span class="text-muted">No photos</span>
+                    {% endif %}
                 </td>
 
+                <td>
+                    <form action="/delete-record/{{ record.id }}" method="POST">
 
+                        <button
+                            type="submit"
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this scrap record?');"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+                </td>
 
             </tr>
 
-
-
             {% endfor %}
-
-
 
             </tbody>
 
-
-
         </table>
-
-
 
     </div>
 
-
-
 </div>
-
-
 
 {% endblock %}
