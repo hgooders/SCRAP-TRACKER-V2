@@ -164,6 +164,7 @@ new Chart(document.getElementById("lineChart"), {
 
 function updateClock(){
     const now = new Date();
+
     document.getElementById("lastUpdated").innerHTML =
         now.toLocaleTimeString();
 }
@@ -171,9 +172,5 @@ function updateClock(){
 updateClock();
 setInterval(updateClock, 1000);
 </script>
-
-{% endblock %}
-
-</div>
 
 {% endblock %}
