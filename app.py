@@ -7,7 +7,7 @@ from flask import (
     flash,
     send_file
 )
-from collections import counter
+from collections import Counter
 
 from flask_login import (
     LoginManager,
