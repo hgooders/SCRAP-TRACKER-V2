@@ -137,20 +137,18 @@ def seed_defaults():
                 ScrapReason(name=reason)
             )
 
-    if not User.query.filter_by(
-        username="admin"
-    ).first():
+    admin = User.query.filter_by(username="HG").first()
 
-        admin = User(
-            username="HG",
-            password_hash=generate_password_hash(
-                "HG"
-            ),
-            role="admin"
-        )
-
-        db.session.add(admin)
-
+if not admin:
+    admin = User(
+        username="HG",
+        password_hash=generate_password_hash("HG"),
+        role="admin"
+    )
+    db.session.add(admin)
+else:
+    admin.password_hash = generate_password_hash("HG")
+    admin.role = "admin"
     db.session.commit()
 
 
