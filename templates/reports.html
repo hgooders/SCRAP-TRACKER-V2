@@ -26,6 +26,7 @@
                     <th>Date</th>
                     <th>Part Number</th>
                     <th>Part Name</th>
+                    <th>Body Number</th>
                     <th>Qty</th>
                     <th>Reason</th>
                     <th>Origin</th>
@@ -46,6 +47,7 @@
                 <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
                 <td>{{ record.part_number }}</td>
                 <td>{{ record.part_name }}</td>
+                <td>{{ record.body_number }}</td>
                 <td>{{ record.quantity }}</td>
                 <td>{{ record.reason }}</td>
                 <td>{{ record.origin_line }}</td>
