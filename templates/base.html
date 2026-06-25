@@ -14,7 +14,6 @@
 <body>
 
 <nav class="navbar navbar-expand-lg mb-4">
-
     <div class="container">
 
         <a class="navbar-brand" href="/dashboard">
@@ -25,19 +24,21 @@
 
         <div>
 
-            <a href="/dashboard" class="btn btn-light nav-btn">
+            <a href="/dashboard" class="btn btn-light">
                 Dashboard
             </a>
 
-            <a href="/add-scrap" class="btn btn-light nav-btn">
-                Add Scrap
-            </a>
-
-            <a href="/reports" class="btn btn-light nav-btn">
+            <a href="/reports" class="btn btn-light">
                 Reports
             </a>
 
-            <a href="/logout" class="btn btn-dark nav-btn">
+            {% if current_user.role == "admin" %}
+            <a href="/admin/users" class="btn btn-warning">
+                Users
+            </a>
+            {% endif %}
+
+            <a href="/logout" class="btn btn-danger">
                 Logout
             </a>
 
@@ -46,8 +47,9 @@
         {% endif %}
 
     </div>
-
 </nav>
+
+
 
 <div class="container">
 
