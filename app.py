@@ -348,7 +348,7 @@ def export_excel():
         "Destination Line",
         "Comments",
         "Submitted By"
-        "Photo Files
+        "Photo Files"
     ]
 
     sheet.append(headers)
