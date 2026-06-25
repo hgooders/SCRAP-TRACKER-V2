@@ -79,6 +79,7 @@ def load_user(user_id):
 def seed_defaults():
 
     lines = [
+        "QA"
         "Trim 1",
         "Trim 2 / IP",
         "Chassis 1",
@@ -88,7 +89,6 @@ def seed_defaults():
         "Door Line",
         "Final 1",
         "Final 2"
-        "QA"
     ]
 
     reasons = [
