@@ -88,6 +88,7 @@ def seed_defaults():
         "Door Line",
         "Final 1",
         "Final 2"
+        "QA"
     ]
 
     reasons = [
@@ -98,6 +99,7 @@ def seed_defaults():
         "Tuck",
         "Deformity",
         "Other"
+        "Crease"
     ]
 
     for line in lines:
