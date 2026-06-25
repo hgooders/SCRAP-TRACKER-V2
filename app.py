@@ -348,6 +348,7 @@ def export_excel():
         "Destination Line",
         "Comments",
         "Submitted By"
+        "Photo Files
     ]
 
     sheet.append(headers)
@@ -371,7 +372,8 @@ def export_excel():
             record.origin_line,
             record.destination_line,
             record.comments,
-            record.submitted_by
+            record.submitted_by,
+            ", ".join(photo.filename for photo in record.photos)
         ])
 
     output = BytesIO()
