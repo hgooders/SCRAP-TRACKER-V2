@@ -4,10 +4,27 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+{% macro factory_tile(name, display_name, area_class) %}
+    {% set ns = namespace(line=None) %}
+
+    {% for item in line_statuses %}
+        {% if item.name == name %}
+            {% set ns.line = item %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="factory-zone {{ area_class }} {{ ns.line.colour if ns.line else 'green' }}">
+        <div class="zone-name">{{ display_name }}</div>
+        <div class="zone-icon">{{ ns.line.icon if ns.line else '🟢' }}</div>
+        <div class="zone-count">{{ ns.line.count if ns.line else 0 }}</div>
+        <div class="zone-text">Scrap Today</div>
+    </div>
+{% endmacro %}
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold">Production Dashboard</h2>
-        <p class="text-muted mb-0">Live Factory Overview</p>
+        <p class="text-muted mb-0">Live Factory Sky View</p>
     </div>
 
     <div class="text-end">
@@ -57,22 +74,44 @@
 <div class="card p-4 mb-4">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="mb-0">Factory Line Status</h4>
-        <span class="badge bg-dark">Today</span>
-    </div>
-
-    <div class="factory-map">
-
-        {% for line in line_statuses %}
-
-        <div class="factory-line {{ line.colour }}">
-            <div class="line-title">{{ line.name }}</div>
-            <div class="line-icon">{{ line.icon }}</div>
-            <div class="line-count">{{ line.count }}</div>
-            <div class="line-label">{{ line.label }}</div>
+        <div>
+            <h4 class="mb-0">Factory Sky View</h4>
+            <p class="text-muted mb-0">Live production line status</p>
         </div>
 
-        {% endfor %}
+        <div>
+            <span class="badge bg-success">Green = 0</span>
+            <span class="badge bg-warning text-dark">Amber = 1-3</span>
+            <span class="badge bg-danger">Red = 4+</span>
+        </div>
+    </div>
+
+    <div class="factory-sky-view">
+
+        <div class="factory-building main-building"></div>
+        <div class="factory-building side-building"></div>
+        <div class="factory-road road-horizontal"></div>
+        <div class="factory-road road-vertical"></div>
+
+        {{ factory_tile("Engine Line", "Engine Line", "engine-line") }}
+        {{ factory_tile("SSA", "SSA", "ssa-line") }}
+
+        {{ factory_tile("Chassis 1", "Chassis 1", "chassis-one") }}
+        {{ factory_tile("Chassis 2", "Chassis 2", "chassis-two") }}
+        {{ factory_tile("Chassis 3", "Chassis 3", "chassis-three") }}
+
+        {{ factory_tile("Other Process Areas", "Other Process", "other-process") }}
+
+        {{ factory_tile("IP Line", "IP Line", "ip-line") }}
+        {{ factory_tile("Trim 2 / IP", "Trim 2", "trim-two") }}
+
+        {{ factory_tile("Door Line", "Door Line", "door-line") }}
+        {{ factory_tile("Trim 1", "Trim 1", "trim-one") }}
+
+        {{ factory_tile("Final 2", "Final 2", "final-two") }}
+        {{ factory_tile("Final 1", "Final 1", "final-one") }}
+
+        {{ factory_tile("QA", "QA", "qa-line") }}
 
     </div>
 
@@ -111,9 +150,7 @@
     <h4 class="mb-3">Recent Scrap Records</h4>
 
     <div class="table-responsive">
-
         <table class="table table-hover">
-
             <thead class="table-dark">
                 <tr>
                     <th>Date</th>
@@ -139,76 +176,153 @@
                 </tr>
             {% endfor %}
             </tbody>
-
         </table>
-
     </div>
 
 </div>
 
 <style>
-.factory-map{
-    display:grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap:18px;
-    background:linear-gradient(135deg,#eef2f7,#dfe6ee);
-    padding:25px;
-    border-radius:20px;
+.factory-sky-view{
+    position:relative;
+    height:720px;
+    border-radius:28px;
+    overflow:hidden;
+    background:
+        linear-gradient(135deg, rgba(40,52,70,.92), rgba(75,92,110,.88)),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255,255,255,.05) 0,
+            rgba(255,255,255,.05) 2px,
+            transparent 2px,
+            transparent 18px
+        );
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:inset 0 0 60px rgba(0,0,0,.35);
 }
 
-.factory-line{
-    min-height:135px;
+.factory-building{
+    position:absolute;
+    background:rgba(255,255,255,.12);
+    border:2px solid rgba(255,255,255,.25);
+    border-radius:22px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.main-building{
+    left:6%;
+    top:7%;
+    width:67%;
+    height:82%;
+}
+
+.side-building{
+    right:6%;
+    top:15%;
+    width:17%;
+    height:55%;
+}
+
+.factory-road{
+    position:absolute;
+    background:rgba(20,25,35,.45);
+    border:1px dashed rgba(255,255,255,.25);
+}
+
+.road-horizontal{
+    left:4%;
+    right:4%;
+    bottom:8%;
+    height:48px;
+    border-radius:24px;
+}
+
+.road-vertical{
+    right:27%;
+    top:6%;
+    bottom:6%;
+    width:48px;
+    border-radius:24px;
+}
+
+.factory-zone{
+    position:absolute;
+    width:170px;
+    min-height:95px;
     border-radius:18px;
-    padding:18px;
+    padding:12px;
     text-align:center;
     color:white;
-    box-shadow:0 8px 20px rgba(0,0,0,.18);
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+    border:2px solid rgba(255,255,255,.35);
+    z-index:5;
 }
 
-.factory-line.green{
-    background:linear-gradient(135deg,#2eaf4f,#1d7f38);
+.factory-zone.green{
+    background:linear-gradient(135deg,#2ecc71,#159447);
 }
 
-.factory-line.amber{
-    background:linear-gradient(135deg,#f5a623,#c77a00);
+.factory-zone.amber{
+    background:linear-gradient(135deg,#f7b731,#d68910);
 }
 
-.factory-line.red{
-    background:linear-gradient(135deg,#e53935,#a80000);
-    animation:pulseRed 1.5s infinite;
+.factory-zone.red{
+    background:linear-gradient(135deg,#ff4d4d,#b30000);
+    animation:redPulse 1.4s infinite;
 }
 
-.line-title{
-    font-weight:800;
-    font-size:1rem;
+.zone-name{
+    font-size:.9rem;
+    font-weight:900;
     text-transform:uppercase;
-    margin-bottom:8px;
+    letter-spacing:.5px;
 }
 
-.line-icon{
-    font-size:2rem;
+.zone-icon{
+    font-size:1.7rem;
+    margin-top:4px;
 }
 
-.line-count{
-    font-size:2.5rem;
+.zone-count{
+    font-size:2.1rem;
     font-weight:900;
     line-height:1;
 }
 
-.line-label{
-    font-size:.85rem;
+.zone-text{
+    font-size:.72rem;
     opacity:.9;
-    margin-top:5px;
+    text-transform:uppercase;
 }
 
-@keyframes pulseRed{
-    0%{box-shadow:0 0 0 rgba(229,57,53,.5);}
-    50%{box-shadow:0 0 25px rgba(229,57,53,.9);}
-    100%{box-shadow:0 0 0 rgba(229,57,53,.5);}
+/* Your factory layout */
+.engine-line{ left:10%; top:8%; }
+.ssa-line{ right:8%; top:10%; }
+
+.chassis-one{ left:13%; top:23%; }
+.chassis-two{ left:43%; top:25%; }
+
+.chassis-three{ left:13%; top:39%; }
+.other-process{ left:43%; top:41%; width:230px; }
+
+.ip-line{ left:13%; top:55%; }
+.trim-two{ left:48%; top:56%; }
+
+.door-line{ left:13%; top:70%; }
+.trim-one{ left:48%; top:70%; }
+
+.final-two{ left:13%; bottom:7%; }
+.final-one{ left:48%; bottom:7%; }
+
+.qa-line{ right:8%; bottom:12%; }
+
+@keyframes redPulse{
+    0%{ box-shadow:0 0 0 rgba(255,77,77,.45); transform:scale(1); }
+    50%{ box-shadow:0 0 35px rgba(255,77,77,.95); transform:scale(1.03); }
+    100%{ box-shadow:0 0 0 rgba(255,77,77,.45); transform:scale(1); }
 }
 
 .dashboard-kpi-card{
@@ -236,14 +350,32 @@
     margin-top:8px;
 }
 
-@media(max-width:900px){
-    .factory-map{
+@media(max-width:1000px){
+    .factory-sky-view{
+        height:auto;
+        padding:20px;
+        display:grid;
         grid-template-columns:repeat(2,1fr);
+        gap:15px;
+    }
+
+    .factory-building,
+    .factory-road{
+        display:none;
+    }
+
+    .factory-zone{
+        position:relative;
+        left:auto !important;
+        right:auto !important;
+        top:auto !important;
+        bottom:auto !important;
+        width:100%;
     }
 }
 
 @media(max-width:600px){
-    .factory-map{
+    .factory-sky-view{
         grid-template-columns:1fr;
     }
 }
@@ -296,4 +428,4 @@ updateClock();
 setInterval(updateClock, 1000);
 </script>
 
-{% endblock %}
+{% endblock 
