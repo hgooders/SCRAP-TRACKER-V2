@@ -2,61 +2,56 @@
 
 {% block content %}
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     <div>
-        <h2 class="fw-bold">
-            Production Dashboard
-        </h2>
-
-        <p class="text-muted mb-0">
-            Live Factory Overview
-        </p>
+        <h2 class="fw-bold">Production Dashboard</h2>
+        <p class="text-muted mb-0">Live Factory Overview</p>
     </div>
 
     <div class="text-end">
-
-        <span class="badge bg-success p-2">
-            ● LIVE
-        </span>
-
+        <span class="badge bg-success p-2">● LIVE</span>
         <div class="text-muted mt-2">
             Last Updated:
             <span id="lastUpdated"></span>
         </div>
-
     </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <div class="row g-3 mb-4">
 
-    <div class="col-md-3">
-        <div class="card p-4 text-center">
-            <h6>Today's Scrap</h6>
-            <div class="kpi text-danger">{{ today_qty }}</div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card p-4 dashboard-kpi-card">
+            <div class="kpi-label">Today's Scrap</div>
+            <div class="kpi-number text-danger">{{ today_qty }}</div>
+            <div class="kpi-subtitle">Parts reported today</div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-4 text-center">
-            <h6>This Week</h6>
-            <div class="kpi text-primary">{{ week_qty }}</div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card p-4 dashboard-kpi-card">
+            <div class="kpi-label">This Week</div>
+            <div class="kpi-number text-primary">{{ week_qty }}</div>
+            <div class="kpi-subtitle">Scrap this week</div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-4 text-center">
-            <h6>This Month</h6>
-            <div class="kpi text-success">{{ month_qty }}</div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card p-4 dashboard-kpi-card">
+            <div class="kpi-label">This Month</div>
+            <div class="kpi-number text-success">{{ month_qty }}</div>
+            <div class="kpi-subtitle">Scrap this month</div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card p-4 text-center">
-            <h6>Total Scrap</h6>
-            <div class="kpi">{{ total_qty }}</div>
+    <div class="col-lg-3 col-md-6">
+        <div class="card p-4 dashboard-kpi-card">
+            <div class="kpi-label">Total Scrap</div>
+            <div class="kpi-number">{{ total_qty }}</div>
+            <div class="kpi-subtitle">All recorded scrap</div>
         </div>
     </div>
 
@@ -166,34 +161,18 @@ new Chart(document.getElementById("lineChart"), {
         indexAxis: "y"
     }
 });
+
+function updateClock(){
+    const now = new Date();
+    document.getElementById("lastUpdated").innerHTML =
+        now.toLocaleTimeString();
+}
+
+updateClock();
+setInterval(updateClock, 1000);
 </script>
 
-{% block content %}
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-    <div>
-        <h2 class="fw-bold">
-            Production Dashboard
-        </h2>
-
-        <p class="text-muted mb-0">
-            Live Factory Overview
-        </p>
-    </div>
-
-    <div class="text-end">
-
-        <span class="badge bg-success p-2">
-            ● LIVE
-        </span>
-
-        <div class="text-muted mt-2">
-            Last Updated:
-            <span id="lastUpdated"></span>
-        </div>
-
-    </div>
+{% endblock %}
 
 </div>
 
