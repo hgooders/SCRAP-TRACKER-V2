@@ -224,11 +224,6 @@ def dashboard():
         ScrapRecord.created_at.desc()
     ).limit(25).all()
 
-   
-
-
-)
-
     
 @app.route("/add-scrap", methods=["GET", "POST"])
 @login_required
