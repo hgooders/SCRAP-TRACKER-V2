@@ -1,0 +1,178 @@
+<div class="card shadow-lg border-0 rounded-4 mb-4">
+
+    <div class="card-header bg-white">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT STATUS PANEL -->
+
+            <div class="col-lg-3">
+
+                <h4 class="fw-bold mb-3">
+                    Production Line Status
+                </h4>
+
+                <div class="factory-status-list">
+
+                    {% for line in line_statuses %}
+
+                    <div class="status-row">
+
+                        <div class="status-left">
+
+                            <span class="status-light {{ line.colour }}"></span>
+
+                            <span class="status-name">
+
+                                {{ line.name }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="status-count">
+
+                            {{ line.count }}
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <!-- FACTORY -->
+
+            <div class="col-lg-9">
+
+                <div class="factory-map">
+
+                    <!-- Background -->
+
+                    <img
+                        src="{{ url_for('static', filename='images/factory-layout.png') }}"
+                        class="factory-image">
+
+                    <!-- Production Lines -->
+
+                    <div class="factory-overlay">
+
+                        <!-- ENGINE -->
+
+                        <div class="production-bar engine green">
+
+                            ENGINE LINE
+
+                        </div>
+
+                        <!-- CHASSIS 1 -->
+
+                        <div class="production-bar chassis1 amber">
+
+                            CHASSIS 1
+
+                        </div>
+
+                        <!-- CHASSIS 2 -->
+
+                        <div class="production-bar chassis2 green">
+
+                            CHASSIS 2
+
+                        </div>
+
+                        <!-- CHASSIS 3 -->
+
+                        <div class="production-bar chassis3 green">
+
+                            CHASSIS 3
+
+                        </div>
+
+                        <!-- IP -->
+
+                        <div class="production-bar ip green">
+
+                            IP LINE
+
+                        </div>
+
+                        <!-- OTHER -->
+
+                        <div class="production-bar other green">
+
+                            OTHER PROCESS
+
+                        </div>
+
+                        <!-- TRIM 2 -->
+
+                        <div class="production-bar trim2 green">
+
+                            TRIM 2
+
+                        </div>
+
+                        <!-- DOOR -->
+
+                        <div class="production-bar door green">
+
+                            DOOR LINE
+
+                        </div>
+
+                        <!-- TRIM 1 -->
+
+                        <div class="production-bar trim1 green">
+
+                            TRIM 1
+
+                        </div>
+
+                        <!-- FINAL 2 -->
+
+                        <div class="production-bar final2 green">
+
+                            FINAL 2
+
+                        </div>
+
+                        <!-- FINAL 1 -->
+
+                        <div class="production-bar final1 red">
+
+                            FINAL 1
+
+                        </div>
+
+                        <!-- QA -->
+
+                        <div class="production-bar qa green">
+
+                            QA
+
+                        </div>
+
+                        <!-- SSA -->
+
+                        <div class="production-bar ssa green">
+
+                            SSA
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
