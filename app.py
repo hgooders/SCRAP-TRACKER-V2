@@ -11,7 +11,6 @@ from collections import Counter
 
 from functools import wraps
 
-from sqlalchemy import text
 
 from flask_login import (
     LoginManager,
@@ -36,6 +35,8 @@ from io import BytesIO
 from openpyxl import Workbook
 
 import os
+
+from sqlalchemy import text
 
 app = Flask(__name__)
 
@@ -511,11 +512,17 @@ def delete_user(user_id):
 # ------------------------
 
 with app.app_context():
-
     db.create_all()
 
-    seed_defaults()
+    try:
+        db.session.execute(
+            text("ALTER TABLE scrap_records ADD COLUMN body_number VARCHAR(100);")
+        )
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
 
+    seed_defaults()
 
 if __name__ == "__main__":
     app.run(debug=True)
