@@ -149,7 +149,8 @@ if not admin:
 else:
     admin.password_hash = generate_password_hash("HG")
     admin.role = "admin"
-    db.session.commit()
+    
+db.session.commit()
 
 
 # ------------------------
