@@ -9,6 +9,8 @@ from flask import (
 )
 from collections import Counter 
 
+from functools import wraps
+
 from flask_login import (
     LoginManager,
     login_user,
@@ -70,6 +72,16 @@ login_manager.login_view = "login"
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+def admin_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not current_user.is_authenticated or current_user.role != "admin":
+            flash("Admin access only.")
+            return redirect(url_for("dashboard"))
+        return func(*args, **kwargs)
+    return wrapper
+
 
 
 # ------------------------
@@ -434,6 +446,63 @@ def delete_record(record_id):
         url_for("reports")
 
     )
+
+@app.route("/admin/users", methods=["GET", "POST"])
+@login_required
+@admin_required
+def admin_users():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        role = request.form.get("role")
+
+        existing_user = User.query.filter_by(username=username).first()
+
+        if existing_user:
+            flash("Username already exists.")
+            return redirect(url_for("admin_users"))
+
+        new_user = User(
+            username=username,
+            password_hash=generate_password_hash(password),
+            role=role
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("User created successfully.")
+
+        return redirect(url_for("admin_users"))
+
+    users = User.query.order_by(User.username).all()
+
+    return render_template(
+        "admin_users.html",
+        users=users
+    )
+
+
+@app.route("/admin/users/delete/<int:user_id>", methods=["POST"])
+@login_required
+@admin_required
+def delete_user(user_id):
+
+    user = User.query.get_or_404(user_id)
+
+    if user.username == "admin":
+        flash("The main admin account cannot be deleted.")
+        return redirect(url_for("admin_users"))
+
+    db.session.delete(user)
+    db.session.commit()
+
+    flash("User deleted successfully.")
+
+    return redirect(url_for("admin_users"))
+
 
 # ------------------------
 # STARTUP
