@@ -217,38 +217,84 @@ def logout():
 def dashboard():
 
     all_records = ScrapRecord.query.all()
+
     today = datetime.utcnow().date()
 
-    today_qty = sum(
-        r.quantity for r in all_records
+    today_records = [
+        r for r in all_records
         if r.created_at.date() == today
-    )
+    ]
+
+    today_qty = sum(r.quantity for r in today_records)
 
     week_qty = sum(
-        r.quantity for r in all_records
+        r.quantity
+        for r in all_records
         if (today - r.created_at.date()).days <= 7
     )
 
     month_qty = sum(
-        r.quantity for r in all_records
+        r.quantity
+        for r in all_records
         if r.created_at.month == today.month
         and r.created_at.year == today.year
     )
 
-    total_qty = sum(
-        r.quantity for r in all_records
-    )
+    total_qty = sum(r.quantity for r in all_records)
 
     records = ScrapRecord.query.order_by(
         ScrapRecord.created_at.desc()
-    ).limit(25).all()
+    ).limit(10).all()
 
     reason_counter = Counter()
     line_counter = Counter()
 
-    for record in all_records:
+    for record in today_records:
         reason_counter[record.reason] += record.quantity
         line_counter[record.origin_line] += record.quantity
+
+    factory_lines = [
+        "Engine Line",
+        "SSA",
+        "Chassis 1",
+        "Chassis 2",
+        "Chassis 3",
+        "Other Process Areas",
+        "IP Line",
+        "Trim 2 / IP",
+        "Trim 1",
+        "Door Line",
+        "Final 2",
+        "Final 1",
+        "QA"
+    ]
+
+    line_statuses = []
+
+    for line in factory_lines:
+
+        count = line_counter.get(line, 0)
+
+        if count == 0:
+            colour = "green"
+            label = "Good"
+            icon = "🟢"
+        elif count <= 3:
+            colour = "amber"
+            label = "Warning"
+            icon = "🟠"
+        else:
+            colour = "red"
+            label = "Critical"
+            icon = "🔴"
+
+        line_statuses.append({
+            "name": line,
+            "count": count,
+            "colour": colour,
+            "label": label,
+            "icon": icon
+        })
 
     return render_template(
         "dashboard.html",
@@ -260,7 +306,8 @@ def dashboard():
         reason_labels=list(reason_counter.keys()),
         reason_values=list(reason_counter.values()),
         line_labels=list(line_counter.keys()),
-        line_values=list(line_counter.values())
+        line_values=list(line_counter.values()),
+        line_statuses=line_statuses
     )
     
 @app.route("/add-scrap", methods=["GET", "POST"])
