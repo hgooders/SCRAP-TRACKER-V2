@@ -50,6 +50,19 @@
 
                 <div class="factory-map">
 
+
+<div class="factory-grid">
+
+    <div class="factory-building building-main"></div>
+    <div class="factory-building building-secondary"></div>
+
+    <div class="factory-road road-horizontal"></div>
+    <div class="factory-road road-vertical"></div>
+
+</div>
+
+                    
+
                     <img
                         src="{{ url_for('static', filename='images/factory-layout.png') }}"
                         class="factory-image">
@@ -526,5 +539,77 @@
 
 }
 
+
+/* ---------- FACTORY BACKGROUND ---------- */
+
+.factory-map{
+    position:relative;
+    height:760px;
+    border-radius:22px;
+    overflow:hidden;
+    background:#d7dde3;
+}
+
+.factory-grid{
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.18) 0,
+            rgba(255,255,255,.18) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.18) 0,
+            rgba(255,255,255,.18) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+}
+
+.factory-building{
+    position:absolute;
+    background:#c4ccd3;
+    border:3px solid #aeb8c1;
+    border-radius:14px;
+}
+
+.building-main{
+    left:14%;
+    top:6%;
+    width:66%;
+    height:80%;
+}
+
+.building-secondary{
+    right:4%;
+    top:8%;
+    width:14%;
+    height:76%;
+}
+
+.factory-road{
+    position:absolute;
+    background:#707982;
+}
+
+.road-horizontal{
+    left:6%;
+    right:6%;
+    bottom:5%;
+    height:42px;
+}
+
+.road-vertical{
+    right:20%;
+    top:5%;
+    bottom:5%;
+    width:42px;
+}
+
+    
 </style>
                         
