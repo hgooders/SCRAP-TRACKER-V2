@@ -1,1 +1,53 @@
+<div class="col-xl-3">
 
+    <div class="card shadow-sm border-0 rounded-4 h-100">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-1">
+                Production Line Status
+            </h4>
+
+            <p class="text-muted mb-4">
+                Live scrap status
+            </p>
+
+            {% for line in line_statuses %}
+
+            <div class="status-card">
+
+                <div class="status-left">
+
+                    <span class="status-dot {{ line.colour }}"></span>
+
+                    <div>
+
+                        <div class="status-name">
+                            {{ line.name }}
+                        </div>
+
+                        <small class="text-muted">
+
+                            {{ line.label }}
+
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <div class="status-count">
+
+                    {{ line.count }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
