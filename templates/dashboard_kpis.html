@@ -1,103 +1,129 @@
 <div class="row g-4 mb-4">
 
-    <div class="col-xl">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body">
-
-                <div class="text-muted text-uppercase fw-bold small">
-                    Today's Scrap
-                </div>
-
-                <h1 class="display-4 fw-bold text-danger mb-0">
-                    {{ today_qty }}
-                </h1>
-
-                <div class="text-muted">
-                    Parts Reported
-                </div>
-
+    <div class="col-xl col-lg-6">
+        <div class="kpi-card">
+            <div class="kpi-icon danger">🗑️</div>
+            <div>
+                <div class="kpi-title">Total Scrap Today</div>
+                <div class="kpi-value danger">{{ today_qty }} <span>parts</span></div>
+                <div class="kpi-sub">Parts reported today</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body">
-
-                <div class="text-muted text-uppercase fw-bold small">
-                    This Week
-                </div>
-
-                <h1 class="display-4 fw-bold text-primary mb-0">
-                    {{ week_qty }}
-                </h1>
-
-                <div class="text-muted">
-                    Weekly Total
-                </div>
-
+    <div class="col-xl col-lg-6">
+        <div class="kpi-card">
+            <div class="kpi-icon primary">📦</div>
+            <div>
+                <div class="kpi-title">Total Parts Affected</div>
+                <div class="kpi-value">{{ total_qty }} <span>parts</span></div>
+                <div class="kpi-sub">All recorded scrap</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body">
-
-                <div class="text-muted text-uppercase fw-bold small">
-                    This Month
-                </div>
-
-                <h1 class="display-4 fw-bold text-success mb-0">
-                    {{ month_qty }}
-                </h1>
-
-                <div class="text-muted">
-                    Monthly Total
-                </div>
-
+    <div class="col-xl col-lg-6">
+        <div class="kpi-card">
+            <div class="kpi-icon purple">£</div>
+            <div>
+                <div class="kpi-title">Scrap Cost Today</div>
+                <div class="kpi-value purple">£{{ today_qty * 50 }}</div>
+                <div class="kpi-sub">Estimated at £50/part</div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body">
-
-                <div class="text-muted text-uppercase fw-bold small">
-                    Total Scrap
+    <div class="col-xl col-lg-6">
+        <div class="kpi-card">
+            <div class="kpi-icon warning">⚠️</div>
+            <div>
+                <div class="kpi-title">Most Common Reason</div>
+                <div class="kpi-value small">
+                    {{ reason_labels[0] if reason_labels else "None" }}
                 </div>
-
-                <h1 class="display-4 fw-bold mb-0">
-                    {{ total_qty }}
-                </h1>
-
-                <div class="text-muted">
-                    Database Total
+                <div class="kpi-sub">
+                    {{ reason_values[0] if reason_values else 0 }} parts
                 </div>
-
             </div>
         </div>
     </div>
 
-    <div class="col-xl">
-        <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-body">
-
-                <div class="text-muted text-uppercase fw-bold small">
-                    Production Lines
+    <div class="col-xl col-lg-6">
+        <div class="kpi-card">
+            <div class="kpi-icon danger">🏭</div>
+            <div>
+                <div class="kpi-title">Worst Line</div>
+                <div class="kpi-value small">
+                    {{ line_labels[0] if line_labels else "None" }}
                 </div>
-
-                <h1 class="display-4 fw-bold text-secondary mb-0">
-                    {{ line_statuses|length }}
-                </h1>
-
-                <div class="text-muted">
-                    Live Status
+                <div class="kpi-sub">
+                    {{ line_values[0] if line_values else 0 }} parts
                 </div>
-
             </div>
         </div>
     </div>
 
 </div>
+
+<style>
+.kpi-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 22px;
+    min-height: 132px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .06);
+}
+
+.kpi-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    font-weight: 900;
+    flex-shrink: 0;
+}
+
+.kpi-icon.danger { background: #fee2e2; color: #dc2626; }
+.kpi-icon.primary { background: #dbeafe; color: #2563eb; }
+.kpi-icon.purple { background: #ede9fe; color: #7c3aed; }
+.kpi-icon.warning { background: #fef3c7; color: #f59e0b; }
+
+.kpi-title {
+    text-transform: uppercase;
+    color: #334155;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.kpi-value {
+    font-size: 34px;
+    font-weight: 900;
+    color: #0f172a;
+    line-height: 1.1;
+}
+
+.kpi-value span {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.kpi-value.small {
+    font-size: 27px;
+}
+
+.kpi-value.danger { color: #dc2626; }
+.kpi-value.purple { color: #6d28d9; }
+
+.kpi-sub {
+    color: #64748b;
+    margin-top: 7px;
+    font-size: 14px;
+}
+</style>
