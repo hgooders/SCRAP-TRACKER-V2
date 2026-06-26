@@ -1,1 +1,615 @@
+<div class="card shadow-lg border-0 rounded-4 mb-4">
 
+    <div class="card-header bg-white py-3">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-3">
+
+                <h4 class="fw-bold mb-1">
+                    PRODUCTION LINE STATUS
+                </h4>
+
+                <small class="text-muted">
+                    Live Factory Status
+                </small>
+
+                <div class="factory-status-list mt-4">
+
+                    {% for line in line_statuses %}
+
+                    <div class="status-row">
+
+                        <div class="status-left">
+
+                            <span class="status-light {{ line.colour }}"></span>
+
+                            <span class="status-name">
+
+                                {{ line.name }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="status-count">
+
+                            {{ line.count }}
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="factory-map">
+
+
+<div class="factory-grid">
+
+    <div class="factory-building building-main"></div>
+    <div class="factory-building building-secondary"></div>
+
+    <div class="factory-road road-horizontal"></div>
+    <div class="factory-road road-vertical"></div>
+
+</div>
+
+                    
+
+                    <img
+                        src="{{ url_for('static', filename='images/factory-layout.png') }}"
+                        class="factory-image">
+
+                    <div class="factory-overlay">
+
+<!-- TOP BUILDING -->
+
+<div class="production-bar engine {{ line_lookup['Engine Line'].colour }}">
+
+    ENGINE LINE
+
+    <span class="line-total">
+
+        {{ line_lookup['Engine Line'].count }}
+
+    </span>
+
+</div>
+
+<div class="production-bar trim1 {{ line_lookup['Trim 1'].colour }}">
+
+    TRIM 1
+
+    <span class="line-total">
+
+        {{ line_lookup['Trim 1'].count }}
+
+    </span>
+
+</div>
+
+<div class="production-bar trim2 {{ line_lookup['IP Line'].colour }}">
+
+    TRIM2 / IP 
+
+    <span class="line-total">
+
+        {{ line_lookup['IP Line'].count }}
+
+    </span>
+
+</div>
+
+<!-- MIDDLE BUILDING -->
+
+<div class="production-bar ip {{ line_lookup['Trim 2 / IP'].colour }}">
+
+  Trim 2
+
+    <span class="line-total">
+
+        {{ line_lookup['Trim 2 / IP'].count }}
+
+    </span>
+
+</div>
+                        
+<div class="production-bar chassis1 {{ line_lookup['Chassis 1'].colour }}">
+
+    CHASSIS 1
+
+    <span class="line-total">
+
+        {{ line_lookup['Chassis 1'].count }}
+
+    </span>
+
+</div>
+
+<div class="production-bar chassis2 {{ line_lookup['Chassis 2'].colour }}">
+
+    CHASSIS 2
+
+    <span class="line-total">
+
+        {{ line_lookup['Chassis 2'].count }}
+
+    </span>
+
+</div>
+
+<div class="production-bar chassis3 {{ line_lookup['Chassis 3'].colour }}">
+
+    CHASSIS 3
+
+    <span class="line-total">
+
+        {{ line_lookup['Chassis 3'].count }}
+
+    </span>
+
+</div>
+
+<div class="production-bar other {{ line_lookup['Other Process Areas'].colour }}">
+
+    OTHER PROCESS
+
+    <span class="line-total">
+
+        {{ line_lookup['Other Process Areas'].count }}
+
+    </span>
+
+</div>
+
+<!-- LOWER BUILDING -->
+
+<div class="production-bar door {{ line_lookup['Door Line'].colour }}">
+
+    DOOR LINE
+
+    <span class="line-total">
+        {{ line_lookup['Door Line'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar final1 {{ line_lookup['Final 1'].colour }}">
+
+    FINAL 1
+
+    <span class="line-total">
+        {{ line_lookup['Final 1'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar final2 {{ line_lookup['Final 2'].colour }}">
+
+    FINAL 2
+
+    <span class="line-total">
+        {{ line_lookup['Final 2'].count }}
+    </span>
+
+</div>
+
+<!-- SIDE BUILDING -->
+
+<div class="production-bar qa {{ line_lookup['QA'].colour }}">
+
+    QA
+
+    <span class="line-total">
+        {{ line_lookup['QA'].count }}
+    </span>
+
+</div>
+
+<div class="production-bar ssa {{ line_lookup['SSA'].colour }}">
+
+    SSA
+
+    <span class="line-total">
+        {{ line_lookup['SSA'].count }}
+    </span>
+
+</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+                        
+
+<style>
+
+.factory-map{
+
+    position:relative;
+
+    width:100%;
+
+    height:760px;
+
+    overflow:hidden;
+
+    border-radius:22px;
+
+    background:#eef2f5;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.18);
+
+}
+
+.factory-image{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    opacity:.95;
+
+}
+
+.factory-overlay{
+
+    position:absolute;
+
+    inset:0;
+
+}
+
+/* LEFT PANEL */
+
+.factory-status-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    max-height:700px;
+
+    overflow-y:auto;
+
+}
+
+.status-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 16px;
+
+    border-radius:12px;
+
+    background:#f8f9fa;
+
+}
+
+.status-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.status-light{
+
+    width:16px;
+
+    height:16px;
+
+    border-radius:50%;
+
+}
+
+.status-light.green{
+    background:#32c95b;
+}
+
+.status-light.amber{
+    background:#f5b301;
+}
+
+.status-light.red{
+    background:#d62828;
+    animation:pulse 1s infinite;
+}
+
+.status-name{
+
+    font-weight:700;
+
+}
+
+.status-count{
+
+    font-size:20px;
+
+    font-weight:800;
+
+}
+
+/* PRODUCTION BARS */
+
+.production-bar{
+
+    position:absolute;
+
+    height:52px;
+
+    border-radius:30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 18px;
+
+    color:white;
+
+    font-weight:800;
+
+    box-shadow:0 10px 20px rgba(0,0,0,.30);
+
+    border:2px solid rgba(255,255,255,.35);
+
+    letter-spacing:.4px;
+
+}
+
+.production-bar.green{
+
+    background:linear-gradient(90deg,#2ecc71,#1e9f53);
+
+}
+
+.production-bar.amber{
+
+    background:linear-gradient(90deg,#f4b400,#d48c00);
+
+}
+
+.production-bar.red{
+
+    background:linear-gradient(90deg,#e53935,#a30000);
+
+    animation:pulse 1s infinite;
+
+}
+
+.line-total{
+
+    background:rgba(255,255,255,.18);
+
+    padding:4px 12px;
+
+    border-radius:20px;
+
+    margin-left:15px;
+
+}
+
+/* POSITIONS */
+
+/* TOP */
+
+.engine{
+    left:30%;
+    top:6%;
+    width:34%;
+}
+
+.ssa{
+    right:3%;
+    top:8%;
+    width:11%;
+    height:220px;
+}
+
+/* ROW 2 */
+
+.chassis1{
+    left:18%;
+    top:24%;
+    width:28%;
+}
+
+.chassis2{
+    left:54%;
+    top:24%;
+    width:28%;
+}
+
+/* ROW 3 */
+
+.chassis3{
+    left:18%;
+    top:38%;
+    width:28%;
+}
+
+.other{
+    left:54%;
+    top:38%;
+    width:28%;
+}
+
+/* ROW 4 */
+
+.ip{
+    left:18%;
+    top:52%;
+    width:28%;
+}
+
+.trim2{
+    left:54%;
+    top:52%;
+    width:28%;
+}
+
+/* ROW 5 */
+
+.door{
+    left:18%;
+    top:66%;
+    width:28%;
+}
+
+.trim1{
+    left:54%;
+    top:66%;
+    width:28%;
+}
+
+/* ROW 6 */
+
+.final2{
+    left:18%;
+    top:80%;
+    width:28%;
+}
+
+.final1{
+    left:54%;
+    top:80%;
+    width:28%;
+}
+
+/* QA */
+
+.qa{
+    right:3%;
+    bottom:6%;
+    width:11%;
+}
+/* ANIMATION */
+
+@keyframes pulse{
+
+    0%{
+
+        transform:scale(1);
+
+    }
+
+    50%{
+
+        transform:scale(1.03);
+
+    }
+
+    100%{
+
+        transform:scale(1);
+
+    }
+
+}
+
+
+/* ---------- FACTORY BACKGROUND ---------- */
+
+.factory-map{
+    position:relative;
+    height:760px;
+    border-radius:22px;
+    overflow:hidden;
+    background:#d7dde3;
+}
+
+.factory-grid{
+    position:absolute;
+    inset:0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.18) 0,
+            rgba(255,255,255,.18) 1px,
+            transparent 1px,
+            transparent 40px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.18) 0,
+            rgba(255,255,255,.18) 1px,
+            transparent 1px,
+            transparent 40px
+        );
+}
+
+.factory-building{
+    position:absolute;
+    background:#c4ccd3;
+    border:3px solid #aeb8c1;
+    border-radius:14px;
+}
+
+.building-main{
+    left:14%;
+    top:6%;
+    width:66%;
+    height:80%;
+}
+
+.building-secondary{
+    right:4%;
+    top:8%;
+    width:14%;
+    height:76%;
+}
+
+.factory-road{
+    position:absolute;
+    background:#707982;
+}
+
+.road-horizontal{
+    left:6%;
+    right:6%;
+    bottom:5%;
+    height:42px;
+}
+
+.road-vertical{
+    right:20%;
+    top:5%;
+    bottom:5%;
+    width:42px;
+}
+
+    
+</style>
+                        
