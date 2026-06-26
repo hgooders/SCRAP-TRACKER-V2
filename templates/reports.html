@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">Scrap Reports</h1>
+        <a href="/export-excel" class="btn btn-success">Export Excel</a>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 p-4">
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Part Number</th>
+                        <th>Part Name</th>
+                        <th>Body Number</th>
+                        <th>Qty</th>
+                        <th>Reason</th>
+                        <th>Origin</th>
+                        <th>Destination</th>
+                        <th>User</th>
+                        <th>Photos</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td>{{ record.part_number }}</td>
+                        <td>{{ record.part_name }}</td>
+                        <td>{{ record.body_number }}</td>
+                        <td>{{ record.quantity }}</td>
+                        <td>{{ record.reason }}</td>
+                        <td>{{ record.origin_line }}</td>
+                        <td>{{ record.destination_line }}</td>
+                        <td>{{ record.submitted_by }}</td>
+                        <td>No photos</td>
+                        <td>
+                            <form method="POST" action="/delete/{{ record.id }}">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
