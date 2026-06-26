@@ -390,7 +390,7 @@ def reports():
     ).all()
 
     return render_template(
-        "reports.html",
+        "dashboard_reports.html",
         records=records
     )
 
