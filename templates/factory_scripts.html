@@ -1,1 +1,21 @@
+<script>
+
+// Refresh dashboard every 30 seconds
+setInterval(function () {
+    window.location.reload();
+}, 30000);
+
+// Highlight any critical production lines
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".factory-line.red").forEach(function(line){
+
+        line.style.boxShadow =
+            "0 0 22px rgba(220,38,38,.8)";
+
+    });
+
+});
+
+</script>
 
