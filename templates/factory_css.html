@@ -1,1 +1,229 @@
+<style>
 
+.factory-map{
+    position:relative;
+    height:760px;
+    border-radius:20px;
+    overflow:hidden;
+    background:#edf2f7;
+    box-shadow:inset 0 0 30px rgba(0,0,0,.08);
+}
+
+/* Factory buildings */
+
+.factory-main{
+    position:absolute;
+    left:12%;
+    top:8%;
+    width:66%;
+    height:78%;
+    background:#d8dde2;
+    border-radius:18px;
+    border:3px solid #bcc5ce;
+}
+
+.factory-side{
+    position:absolute;
+    right:4%;
+    top:10%;
+    width:14%;
+    height:74%;
+    background:#d8dde2;
+    border-radius:18px;
+    border:3px solid #bcc5ce;
+}
+
+/* Roads */
+
+.factory-road{
+    position:absolute;
+    background:#808892;
+}
+
+.factory-road.horizontal{
+    left:6%;
+    right:6%;
+    bottom:6%;
+    height:36px;
+}
+
+.factory-road.vertical{
+    right:20%;
+    top:6%;
+    bottom:6%;
+    width:36px;
+}
+
+/* Production lines */
+
+.factory-line{
+
+    position:absolute;
+
+    height:52px;
+
+    border-radius:30px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 18px;
+
+    color:white;
+
+    font-weight:800;
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+    border:2px solid rgba(255,255,255,.25);
+
+}
+
+.factory-line.green{
+    background:#22c55e;
+}
+
+.factory-line.amber{
+    background:#f59e0b;
+}
+
+.factory-line.red{
+    background:#dc2626;
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+
+    0%{transform:scale(1);}
+
+    50%{transform:scale(1.03);}
+
+    100%{transform:scale(1);}
+
+}
+
+/* LEFT COLUMN */
+
+.engine-line{
+    left:18%;
+    top:10%;
+    width:28%;
+}
+
+.chassis-1{
+    left:18%;
+    top:24%;
+    width:28%;
+}
+
+.chassis-3{
+    left:18%;
+    top:38%;
+    width:28%;
+}
+
+.ip-line{
+    left:18%;
+    top:52%;
+    width:28%;
+}
+
+.door-line{
+    left:18%;
+    top:66%;
+    width:28%;
+}
+
+.final-2{
+    left:18%;
+    top:80%;
+    width:28%;
+}
+
+/* RIGHT COLUMN */
+
+.chassis-2{
+    left:54%;
+    top:24%;
+    width:28%;
+}
+
+.other-process-areas{
+    left:54%;
+    top:38%;
+    width:28%;
+}
+
+.trim-2---ip{
+    left:54%;
+    top:52%;
+    width:28%;
+}
+
+.trim-1{
+    left:54%;
+    top:66%;
+    width:28%;
+}
+
+.final-1{
+    left:54%;
+    top:80%;
+    width:28%;
+}
+
+/* SIDE BUILDING */
+
+.ssa{
+    right:5%;
+    top:10%;
+    width:11%;
+}
+
+.qa{
+    right:5%;
+    bottom:10%;
+    width:11%;
+}
+
+/* Status cards */
+
+.status-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+    padding:14px;
+    border-radius:14px;
+    background:#f8fafc;
+}
+
+.status-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.status-dot{
+    width:16px;
+    height:16px;
+    border-radius:50%;
+}
+
+.status-dot.green{background:#22c55e;}
+.status-dot.amber{background:#f59e0b;}
+.status-dot.red{background:#dc2626;}
+
+.status-name{
+    font-weight:700;
+}
+
+.status-count{
+    font-size:22px;
+    font-weight:800;
+}
+
+</style>
