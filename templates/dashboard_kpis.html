@@ -26,9 +26,9 @@
         <div class="kpi-card">
             <div class="kpi-icon purple">£</div>
             <div>
-                <div class="kpi-title">Scrap Cost Today</div>
-                <div class="kpi-value purple">£{{ today_qty * 50 }}</div>
-                <div class="kpi-sub">Estimated at £50/part</div>
+                <div class="kpi-title">Total Scrap This Month</div>
+                <div class="kpi-value purple">{{ month_qty }}</div>
+                <div class="kpi-sub">Parts reported this mont</div>
             </div>
         </div>
     </div>
@@ -126,4 +126,8 @@
     margin-top: 7px;
     font-size: 14px;
 }
+
+    .kpi-value.primary {
+        color: #2563eb;
+    }    
 </style>
