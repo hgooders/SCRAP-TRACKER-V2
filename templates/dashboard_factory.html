@@ -50,10 +50,10 @@
                         <strong>{{ line_lookup['Chassis 3'].count }}</strong>
                     </div>
 
-                    <div class="factory-line other {{ line_lookup['Other Process Areas'].colour }}">
-                        <span>OTHER PROCESS</span>
-                        <strong>{{ line_lookup['Other Process Areas'].count }}</strong>
-                    </div>
+                    <div class="factory-line engine {{ line_lookup['Engine Line'].colour }}">
+    <span>ENGINE LINE</span>
+    <strong>{{ line_lookup['Engine Line'].count }}</strong>
+</div>
 
                     <div class="factory-line door {{ line_lookup['Door Line'].colour }}">
                         <span>DOOR LINE</span>
@@ -226,7 +226,7 @@
     width:27%;
 }
 
-.other{
+.engine{
     left:56%;
     top:46%;
     width:31%;
