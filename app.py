@@ -248,7 +248,7 @@ def dashboard():
 
     for record in today_records:
         reason_counter[record.reason] += record.quantity
-        line_counter[record.origin_line] += record.quantity
+        line_counter[record.destination_line] += record.quantity
 
     factory_lines = [
         "Engine Line",
@@ -256,7 +256,6 @@ def dashboard():
         "Chassis 1",
         "Chassis 2",
         "Chassis 3",
-        "Other Process Areas",
         "IP Line",
         "Trim 2 / IP",
         "Trim 1",
