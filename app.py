@@ -5,7 +5,8 @@ from flask import (
     url_for,
     request,
     flash,
-    send_file
+    send_file,
+    jsonify
 )
 from collections import Counter 
 
@@ -570,6 +571,33 @@ with app.app_context():
         db.session.rollback()
 
     seed_defaults()
+
+from flask import jsonify
+
+@app.route("/line_reports/<path:line_name>")
+@login_required
+def line_reports(line_name):
+
+    reports = (
+        ScrapRecord.query
+        .filter_by(destination_line=line_name)
+        .order_by(ScrapRecord.created_at.desc())
+        .all()
+    )
+
+    return jsonify([
+        {
+            "time": report.created_at.strftime("%d/%m/%Y %H:%M"),
+            "part_number": report.part_number,
+            "part_name": report.part_name,
+            "body_number": report.body_number,
+            "qty": report.quantity,
+            "reason": report.reason,
+            "comments": report.comments,
+            "submitted_by": report.submitted_by
+        }
+        for report in reports
+    ])
 
 if __name__ == "__main__":
     app.run(debug=True)
