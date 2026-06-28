@@ -194,37 +194,79 @@
     100% { box-shadow: 0 0 0 rgba(220,38,38,.4); }
 }
 
-/* positions over aerial image */
-.trim1 { left: 24%; top: 11%; width: 24%; }
-.trim2 { left: 49%; top: 11%; width: 24%; }
+/* ---------- FACTORY POSITIONS ---------- */
 
-.chassis1 { left: 25%; top: 30%; width: 23%; }
-.chassis2 { left: 50%; top: 30%; width: 23%; }
-
-.chassis3 { left: 25%; top: 45%; width: 23%; }
-.other { left: 50%; top: 45%; width: 23%; }
-
-.door { left: 25%; top: 61%; width: 23%; }
-.final1 { left: 50%; top: 61%; width: 23%; }
-
-.final2 { left: 25%; top: 77%; width: 23%; }
-
-.ssa {
-    right: 8%;
-    top: 31%;
-    width: 10%;
-    height: 98px;
-    flex-direction: column;
-    justify-content: center;
-    gap: 8px;
+.trim1{
+    left:23%;
+    top:8%;
+    width:24%;
 }
 
-.qa {
-    right: 8%;
-    bottom: 8%;
-    width: 10%;
+.trim2{
+    left:50%;
+    top:8%;
+    width:24%;
 }
 
+.chassis1{
+    left:17%;
+    top:28%;
+    width:28%;
+}
+
+.chassis2{
+    left:56%;
+    top:28%;
+    width:26%;
+}
+
+.chassis3{
+    left:20%;
+    top:46%;
+    width:27%;
+}
+
+.other{
+    left:56%;
+    top:46%;
+    width:31%;
+}
+
+.door{
+    left:20%;
+    top:65%;
+    width:26%;
+}
+
+.final1{
+    left:56%;
+    top:65%;
+    width:27%;
+}
+
+.final2{
+    left:38%;
+    top:83%;
+    width:28%;
+}
+
+/* Move SSA OFF the factory */
+.ssa{
+    right:2%;
+    top:18%;
+    width:8%;
+    height:150px;
+    flex-direction:column;
+    justify-content:center;
+    gap:10px;
+}
+
+/* Move QA OFF the factory */
+.qa{
+    right:4%;
+    bottom:3%;
+    width:9%;
+}
 @media(max-width: 1000px) {
     .factory-map-wrap {
         height: 360px;
