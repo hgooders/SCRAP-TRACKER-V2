@@ -599,5 +599,18 @@ def line_reports(line_name):
         for report in reports
     ])
 
+
+@app.route("/delete/<int:id>")
+@login_required
+def delete_scrap(id):
+    record = ScrapRecord.query.get_or_404(id)
+
+    db.session.delete(record)
+    db.session.commit()
+
+    flash("Scrap report deleted successfully.", "success")
+    return redirect(url_for("reports"))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
