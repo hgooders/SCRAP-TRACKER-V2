@@ -600,7 +600,7 @@ def line_reports(line_name):
     ])
 
 
-@app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>", methods=["POST"])
 @login_required
 def delete_scrap(id):
     record = ScrapRecord.query.get_or_404(id)
