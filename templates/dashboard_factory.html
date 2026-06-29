@@ -325,3 +325,104 @@
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modalElement = document.getElementById("lineReportsModal");
+    const modal = new bootstrap.Modal(modalElement);
+
+    document.querySelectorAll(".factory-line").forEach(line => {
+
+        line.addEventListener("click", async function () {
+
+            const lineName = this.dataset.line;
+
+            document.getElementById("lineModalTitle").textContent = lineName;
+
+            document.getElementById("lineReportsLoading").style.display = "block";
+            document.getElementById("lineReportsContent").innerHTML = "";
+
+            modal.show();
+
+            try {
+
+                const response = await fetch(
+                    "/line_reports/" + encodeURIComponent(lineName)
+                );
+
+                const reports = await response.json();
+
+                document.getElementById("lineReportsLoading").style.display = "none";
+
+                if (reports.length === 0) {
+
+                    document.getElementById("lineReportsContent").innerHTML = `
+                        <div class="alert alert-info">
+                            No reports found for <strong>${lineName}</strong>.
+                        </div>
+                    `;
+
+                    return;
+                }
+
+                let html = `
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Time</th>
+                            <th>Part No</th>
+                            <th>Part Name</th>
+                            <th>Body</th>
+                            <th>Qty</th>
+                            <th>Reason</th>
+                            <th>Submitted By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                `;
+
+                reports.forEach(report => {
+
+                    html += `
+                        <tr>
+                            <td>${report.time}</td>
+                            <td>${report.part_number}</td>
+                            <td>${report.part_name}</td>
+                            <td>${report.body_number}</td>
+                            <td>${report.qty}</td>
+                            <td>${report.reason}</td>
+                            <td>${report.submitted_by}</td>
+                        </tr>
+                    `;
+
+                });
+
+                html += `
+                    </tbody>
+                </table>
+                `;
+
+                document.getElementById("lineReportsContent").innerHTML = html;
+
+            } catch (err) {
+
+                document.getElementById("lineReportsLoading").style.display = "none";
+
+                document.getElementById("lineReportsContent").innerHTML = `
+                    <div class="alert alert-danger">
+                        Failed to load reports.
+                    </div>
+                `;
+
+                console.error(err);
+
+            }
+
+        });
+
+    });
+
+});
+</script>
+
